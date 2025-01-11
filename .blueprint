@@ -1,0 +1,31 @@
+created:
+    - database/factories/ProductFactory.php
+    - database/factories/ProductionFactory.php
+    - database/factories/DetailProductionFactory.php
+    - database/factories/SalesFactory.php
+    - database/factories/DetailSalesFactory.php
+    - database/factories/InventoryInFactory.php
+    - database/factories/InventoryOutFactory.php
+    - database/migrations/2025_01_11_194010_create_products_table.php
+    - database/migrations/2025_01_11_194011_create_productions_table.php
+    - database/migrations/2025_01_11_194012_create_detail_productions_table.php
+    - database/migrations/2025_01_11_194013_create_sales_table.php
+    - database/migrations/2025_01_11_194014_create_detail_sales_table.php
+    - database/migrations/2025_01_11_194015_create_inventory_in_table.php
+    - database/migrations/2025_01_11_194016_create_inventory_out_table.php
+    - app/Models/Product.php
+    - app/Models/Production.php
+    - app/Models/DetailProduction.php
+    - app/Models/Sales.php
+    - app/Models/DetailSales.php
+    - app/Models/InventoryIn.php
+    - app/Models/InventoryOut.php
+models:
+    User: { full_name: string, username: string, password: string }
+    Product: { code: string, name: string, image: string, variant: 'enum:tabung_s,tabung_m,kotak default:tabung_s', price: 'decimal:15,2', expired_day: 'integer default:30', stock: 'integer default:0', relationships: { hasMany: 'DetailProduction,DetailSales' } }
+    Production: { inventory_user_id: 'id foreign:users.id', production_request_date: timestamp, production_user_id: 'id foreign:users.id nullable', production_date: 'timestamp nullable', status: 'enum:waiting_for_response,in_progress,pending_approval,approval,rejected default:waiting_for_response', note: string, relationships: { hasMany: DetailProduction } }
+    DetailProduction: { production_id: 'id foreign:productions.id', product_id: 'id foreign:products.id', batch_code: 'string unique', expiration_date: timestamp, shelf_name: string, quantity: integer }
+    Sales: { sales_user_id: 'id foreign:users.id', transaction_date: timestamp, total_amount: 'decimal:15,2', relationships: { hasMany: DetailSales } }
+    DetailSales: { sales_id: 'id foreign:sales.id', product_id: 'id foreign:products.id', quantity: integer, price: 'decimal:15,2', sub_total: 'decimal:15,2' }
+    InventoryIn: { meta: { table: inventory_in }, product_id: 'id foreign:products.id', batch_code: 'string unique', transaction_date: timestamp, shelf_name: string, stock_start: integer, current_stock: integer, unit_price: 'decimal:15,2', expiration_date: timestamp, relationships: { hasMany: InventoryOut } }
+    InventoryOut: { meta: { table: inventory_out }, inventory_in_id: 'id foreign:inventory_in.id', batch_code: string, transaction_date: timestamp, shelf_name: string, stock_out: integer }

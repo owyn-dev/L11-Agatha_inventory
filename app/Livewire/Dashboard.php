@@ -2,17 +2,18 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use Livewire\Attributes\Title;
-
+use Livewire\Component;
 
 #[Title('Dashboard')]
-class Dashboard extends Component {
+class Dashboard extends Component
+{
+    public $title = 'Dashboard';
 
-    public $title = "Dashboard";
-    public $text_subtitle = "Get an overview of the latest data and information";
+    public $text_subtitle = 'Get an overview of the latest data and information';
 
-    public function render() {
+    public function render()
+    {
         return view('livewire.dashboard');
     }
 }
