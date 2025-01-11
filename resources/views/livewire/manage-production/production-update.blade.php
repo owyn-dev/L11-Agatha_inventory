@@ -21,6 +21,20 @@
           <div class="card">
             <div class="card-body">
               <form action="#">
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label class="form-label">Production Request From</label>
+                      <input class="form-control form-control-lg" type="text" value="user_inventory_001" readonly>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label class="form-label">Production Request Date</label>
+                      <input class="form-control form-control-lg" type="text" value="01-12-2024" readonly>
+                    </div>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label class="form-label">Production Date</label>
                   <input class="form-control form-control-lg flatpickr" type="date" placeholder="Select Production Date">

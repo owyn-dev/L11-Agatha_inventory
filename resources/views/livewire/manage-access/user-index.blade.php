@@ -40,6 +40,7 @@
                     <td>production</td>
                     <td>01-12-2024</td>
                     <td>
+                      <a class="btn icon icon-left btn-sm btn-info" href="{{ route('manage-access.user.show') }}"><i class="bi bi-eye"></i></a>
                       <a class="btn icon icon-left btn-sm btn-warning" href="{{ route('manage-access.user.update') }}"><i class="bi bi-pencil"></i></a>
                       <a class="btn icon icon-left btn-sm btn-danger" href="#"><i class="bi bi-trash"></i></a>
                     </td>

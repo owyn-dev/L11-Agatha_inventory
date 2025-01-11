@@ -21,15 +21,17 @@
           <div class="card">
             <div class="card-body">
               <form action="#">
-                <div class="form-group">
-                  <div class="row">
-                    <div class="col-12 col-md-4">
-                      <label class="form-label">Request Production From</label>
-                      <input class="form-control form-control-lg" type="text" value="user_inventory_001" placeholder="Request Form" readonly>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label class="form-label">Production Request From</label>
+                      <input class="form-control form-control-lg" type="text" value="user_inventory_001" readonly>
                     </div>
-                    <div class="col-12 col-md-4">
-                      <label class="form-label">Reference Request Production ID </label>
-                      <input class="form-control form-control-lg" type="number" value="1" placeholder="Refrence Request Production ID" readonly>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label class="form-label">Production Request Date</label>
+                      <input class="form-control form-control-lg" type="text" value="01-12-2024" readonly>
                     </div>
                   </div>
                 </div>
@@ -49,10 +51,6 @@
                 <div class="form-group">
                   <label class="form-label">Note</label>
                   <input class="form-control form-control-lg" type="text" placeholder="Your Note">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Shelf Name</label>
-                  <input class="form-control form-control-lg" type="text" placeholder="Your Shelf Name">
                 </div>
 
                 <div class="form-group">
@@ -79,7 +77,6 @@
                           <th data-type="date">Expiration Date</th>
                           <th>Stock Produced</th>
                           <th>Shelf Name</th>
-                          <th data-sortable="false">Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -91,9 +88,6 @@
                           <td>01-12-2024</td>
                           <td>0</td>
                           <td>RAKGUDANG-A001</td>
-                          <td>
-                            <a class="btn icon icon-left btn-sm btn-danger" href="#"><i class="bi bi-trash"></i></a>
-                          </td>
                         </tr>
                       </tbody>
                     </table>

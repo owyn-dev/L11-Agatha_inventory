@@ -7,10 +7,6 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a class="btn icon icon-left btn-lg btn-primary" href="{{ route('inventory.out.create') }}">
-                <i class="bi bi-plus"></i>
-                Add Data Inventory Out
-              </a>
             </div>
           </div>
         </div>

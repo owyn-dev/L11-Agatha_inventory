@@ -22,11 +22,9 @@
               <table class="table table-striped" id="table-production">
                 <thead>
                   <tr>
-                    <th>User</th>
-                    <th>Product Code</th>
-                    <th>Product Name</th>
-                    <th>Quantity Request</th>
+                    <th>Production Request From</th>
                     <th data-type="date">Production Request Date</th>
+                    <th>Total List Products</th>
                     <th>Status Request</th>
                     <th>Note</th>
                     <th data-sortable="false">Action</th>
@@ -35,62 +33,12 @@
                 <tbody>
                   <tr>
                     <td>user_production_01</td>
-                    <td>NSR001</td>
-                    <td>Nastar</td>
-                    <td>50</td>
                     <td>01-12-2024</td>
+                    <td>1</td>
                     <td><span class="badge bg-secondary">Waiting for Response</span></td>
                     <td>-</td>
                     <td>
                       <a class="btn btn-sm btn-primary" href="{{ route('production.request.create') }}">Make Production</a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>user_production_01</td>
-                    <td>NSR001</td>
-                    <td>Nastar</td>
-                    <td>50</td>
-                    <td>01-12-2024</td>
-                    <td><span class="badge bg-warning">In Progress</span></td>
-                    <td>-</td>
-                    <td>
-                      <a class="btn icon icon-left btn-sm btn-info" href="{{ route('production.show') }}"><i class="bi bi-eye"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>user_production_01</td>
-                    <td>NSR001</td>
-                    <td>Nastar</td>
-                    <td>50</td>
-                    <td>01-12-2024</td>
-                    <td><span class="badge bg-warning">Pending Approval</span></td>
-                    <td>-</td>
-                    <td>
-                      <a class="btn icon icon-left btn-sm btn-info" href="{{ route('production.show') }}"><i class="bi bi-eye"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>user_production_01</td>
-                    <td>NSR001</td>
-                    <td>Nastar</td>
-                    <td>50</td>
-                    <td>01-12-2024</td>
-                    <td><span class="badge bg-danger">Quantity Mismatch</span></td>
-                    <td>Kue kurang 10</td>
-                    <td>
-                      <a class="btn btn-sm btn-primary" href="{{ route('production.request.create') }}">Make Production</a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>user_production_01</td>
-                    <td>NSR001</td>
-                    <td>Nastar</td>
-                    <td>50</td>
-                    <td>01-12-2024</td>
-                    <td><span class="badge bg-info">Approved</span></td>
-                    <td>-</td>
-                    <td>
-                      <a class="btn icon icon-left btn-sm btn-info" href="{{ route('production.show') }}"><i class="bi bi-eye"></i></a>
                     </td>
                   </tr>
                 </tbody>

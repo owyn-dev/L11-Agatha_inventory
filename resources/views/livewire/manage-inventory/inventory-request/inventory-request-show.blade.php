@@ -16,68 +16,95 @@
         </div>
       </div>
 
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="form-group">
-              <label class="form-label">Production Request Date</label>
-              <input class="form-control form-control-lg" type="text" value="01-12-2024" readonly>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Production Status Request</label>
-              <input class="form-control form-control-lg" type="text" value="Complete" readonly>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Note</label>
-              <input class="form-control form-control-lg" type="text" value="-" readonly>
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label class="form-label">Production Request From</label>
+                    <input class="form-control form-control-lg" type="text" value="user_inventory_001" placeholder="Request Form" readonly>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label class="form-label">Production Request Date</label>
+                    <input class="form-control form-control-lg" type="text" value="01-12-2024" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label class="form-label">Produced by</label>
+                    <input class="form-control form-control-lg" type="number" value="user_production_001" placeholder="Produced By" readonly>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label class="form-label">Production Date</label>
+                    <input class="form-control form-control-lg" type="text" value="01-12-2024" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Production Status</label>
+                <input class="form-control form-control-lg" type="text" value="Complete" readonly>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Note</label>
+                <input class="form-control form-control-lg" type="text" value="-" readonly>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-12">
-                <div class="table-responsive">
-                  <table class="table table-striped" id="table-detail-production">
-                    <thead>
-                      <tr>
-                        <th>Code Product</th>
-                        <th>Batch Code Production</th>
-                        <th>Name Product</th>
-                        <th>Variant Product</th>
-                        <th>Price Product</th>
-                        <th data-type="date">Expiration Date</th>
-                        <th>Stock Produced</th>
-                        <th data-sortable="false">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>NSR-S-001</td>
-                        <td>NSR-S-001-BC001-01122024</td>
-                        <td>Nastar</td>
-                        <td>Tabung S</td>
-                        <td>Rp. 0</td>
-                        <td>01-12-2024</td>
-                        <td>0</td>
-                        <td><a class="btn btn-primary" href="#">Show Barcode</a></td>
-                      </tr>
-                    </tbody>
-                  </table>
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="table-responsive">
+                    <table class="table table-striped" id="table-detail-production">
+                      <thead>
+                        <tr>
+                          <th>Code Product</th>
+                          <th>Batch Code Production</th>
+                          <th>Name Product</th>
+                          <th>Variant Product</th>
+                          <th>Price Product</th>
+                          <th data-type="date">Expiration Date</th>
+                          <th>Stock Produced</th>
+                          <th>Shelf Name</th>
+                          <th data-sortable="false">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>NSR-S-001</td>
+                          <td>NSR-S-001-BC001-01122024</td>
+                          <td>Nastar</td>
+                          <td>Tabung S</td>
+                          <td>Rp. 0</td>
+                          <td>01-12-2024</td>
+                          <td>0</td>
+                          <td>RAKGUDANG-A001</td>
+                          <td><a class="btn btn-primary" href="#">Show Barcode</a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
       </div>
 
+    </section>
   </div>
-
-  </section>
-</div>
 </div>
 
 @push('styles-priority')

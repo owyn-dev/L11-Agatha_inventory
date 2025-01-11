@@ -23,7 +23,7 @@
            </a>
          </li>
 
-         <li class="sidebar-item  {{ request()->routeIs('product.*', 'barcode-scanner') ? 'active' : '' }} has-sub">
+         <li class="sidebar-item  {{ request()->routeIs('product.*') ? 'active' : '' }} has-sub">
            <a class='sidebar-link' href="#">
              <i class="bi bi-cake2"></i>
              <span>Manage Product</span>
@@ -33,8 +33,8 @@
              <li class="submenu-item {{ request()->routeIs('product.*') ? 'active' : '' }}">
                <a class="submenu-link" href="{{ route('product.index') }}">Product List</a>
              </li>
-             <li class="submenu-item {{ request()->routeIs('barcode-scanner') ? 'active' : '' }}">
-               <a class="submenu-link" href="{{ route('barcode-scanner') }}">Barcode Scanner</a>
+             <li class="submenu-item {{ request()->routeIs('product.barcode-scanner') ? 'active' : '' }}">
+               <a class="submenu-link" href="{{ route('product.barcode-scanner') }}">Barcode Scanner</a>
              </li>
            </ul>
          </li>
@@ -46,7 +46,7 @@
            </a>
 
            <ul class="submenu">
-             <li class="submenu-item {{ request()->routeIs('production.index', 'production.show', 'production.create', 'production.update') ? 'active' : '' }}">
+             <li class="submenu-item {{ request()->routeIs('production.index', 'production.show', 'production.update') ? 'active' : '' }}">
                <a class="submenu-link" href="{{ route('production.index') }}">Production List</a>
              </li>
 
@@ -67,7 +67,7 @@
            </a>
 
            <ul class="submenu">
-             <li class="submenu-item {{ request()->routeIs('sales.index', 'sales.show', 'sales.create', 'sales.update') ? 'active' : '' }}">
+             <li class="submenu-item {{ request()->routeIs('sales.index', 'sales.show', 'sales.create') ? 'active' : '' }}">
                <a class="submenu-link" href="{{ route('sales.index') }}">Sales List</a>
              </li>
              <li class="submenu-item {{ request()->routeIs('sales.report') ? 'active' : '' }}">
@@ -90,7 +90,7 @@
                <a class="submenu-link" href="{{ route('inventory.out.index') }}">Inventory [OUT]</a>
              </li>
              <li class="submenu-item {{ request()->routeIs('inventory.request.index', 'inventory.request.show', 'inventory.request.create', 'inventory.request.update', 'inventory.request.update-status') ? 'active' : '' }}">
-               <a class="submenu-link" href="{{ route('inventory.request.index') }}">Request Production</a>
+               <a class="submenu-link" href="{{ route('inventory.request.index') }}">Production Request</a>
              </li>
              <li class="submenu-item {{ request()->routeIs('inventory.report') ? 'active' : '' }}">
                <a class="submenu-link" href="{{ route('inventory.report') }}">Inventory Report</a>

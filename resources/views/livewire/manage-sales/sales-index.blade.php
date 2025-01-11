@@ -41,7 +41,6 @@
                     <td>01-12-2024</td>
                     <td>
                       <a class="btn icon icon-left btn-sm btn-info" href="{{ route('sales.show') }}"><i class="bi bi-eye"></i></a>
-                      <a class="btn icon icon-left btn-sm btn-warning" href="{{ route('sales.update') }}"><i class="bi bi-pencil"></i></a>
                     </td>
                   </tr>
                 </tbody>

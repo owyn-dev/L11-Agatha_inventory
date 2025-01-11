@@ -7,10 +7,6 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a class="btn icon icon-left btn-lg btn-primary" href="{{ route('production.create') }}">
-                <i class="bi bi-plus"></i>
-                Add Data Production
-              </a>
             </div>
           </div>
         </div>
@@ -26,11 +22,10 @@
               <table class="table table-striped" id="table-production">
                 <thead>
                   <tr>
-                    <th>User</th>
-                    <th>Production Request</th>
+                    <th>Production Request From</th>
+                    <th data-type="date">Production Request Date</th>
                     <th data-type="date">Production Date</th>
                     <th>Production Status</th>
-                    <th>Total Product</th>
                     <th>Note</th>
                     <th data-sortable="false">Action</th>
                   </tr>
@@ -38,10 +33,9 @@
                 <tbody>
                   <tr>
                     <td>user_production_01</td>
-                    <td>PR-0000001</td>
+                    <td>01-12-2024</td>
                     <td>01-12-2024</td>
                     <td><span class="badge bg-info">Complete</span></td>
-                    <td>1</td>
                     <td>-</td>
                     <td>
                       <a class="btn icon icon-left btn-sm btn-info" href="{{ route('production.show') }}"><i class="bi bi-eye"></i></a>

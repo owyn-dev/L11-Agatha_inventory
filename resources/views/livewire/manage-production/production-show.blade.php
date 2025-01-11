@@ -20,21 +20,33 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <div class="form-group">
-                <div class="row">
-                  <div class="col-12 col-md-4">
-                    <label class="form-label">Request Production From</label>
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label class="form-label">Production Request From</label>
                     <input class="form-control form-control-lg" type="text" value="user_inventory_001" placeholder="Request Form" readonly>
                   </div>
-                  <div class="col-12 col-md-4">
-                    <label class="form-label">Reference Request Production ID </label>
-                    <input class="form-control form-control-lg" type="number" value="1" placeholder="Refrence Request Production ID" readonly>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label class="form-label">Production Request Date</label>
+                    <input class="form-control form-control-lg" type="text" value="01-12-2024" readonly>
                   </div>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="form-label">Production Date</label>
-                <input class="form-control form-control-lg" type="text" value="01-12-2024" readonly>
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label class="form-label">Produced by</label>
+                    <input class="form-control form-control-lg" type="number" value="user_production_001" placeholder="Produced By" readonly>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label class="form-label">Production Date</label>
+                    <input class="form-control form-control-lg" type="text" value="01-12-2024" readonly>
+                  </div>
+                </div>
               </div>
               <div class="form-group">
                 <label class="form-label">Production Status</label>
