@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('code');
             $table->string('name');
             $table->string('image');
-            $table->enum('variant', ['tabung_s', 'tabung_m', 'kotak'])->default('tabung_s');
+            $table->enum('variant', ["tabung_s","tabung_m","kotak"])->default('tabung_s');
             $table->decimal('price', 15, 2);
             $table->integer('expired_day')->default(30);
             $table->integer('stock')->default(0);

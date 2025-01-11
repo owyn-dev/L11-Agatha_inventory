@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('production_request_date');
             $table->foreignId('production_user_id')->nullable()->constrained('users');
             $table->timestamp('production_date')->nullable();
-            $table->enum('status', ['waiting_for_response', 'in_progress', 'pending_approval', 'approval', 'rejected'])->default('waiting_for_response');
+            $table->enum('status', ["waiting_for_response","in_progress","pending_approval","approval","rejected"])->default('waiting_for_response');
             $table->string('note');
             $table->timestamps();
         });

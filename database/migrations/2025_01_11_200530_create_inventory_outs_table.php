@@ -13,16 +13,13 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('inventory_in', function (Blueprint $table) {
+        Schema::create('inventory_outs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained();
-            $table->string('batch_code')->unique();
+            $table->foreignId('inventory_in_id')->constrained();
+            $table->string('batch_code');
             $table->timestamp('transaction_date');
             $table->string('shelf_name');
-            $table->integer('stock_start');
-            $table->integer('current_stock');
-            $table->decimal('unit_price', 15, 2);
-            $table->timestamp('expiration_date');
+            $table->integer('stock_out');
             $table->timestamps();
         });
 
@@ -34,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventory_in');
+        Schema::dropIfExists('inventory_outs');
     }
 };

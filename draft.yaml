@@ -43,8 +43,6 @@ models:
     sub_total: decimal:15,2
 
   InventoryIn:
-    meta:
-      table: inventory_in
     product_id: id foreign:products.id
     batch_code: string unique
     transaction_date: timestamp
@@ -57,9 +55,7 @@ models:
       hasMany: InventoryOut
 
   InventoryOut:
-    meta:
-      table: inventory_out
-    inventory_in_id: id foreign:inventory_in.id
+    inventory_in_id: id foreign:inventory_ins.id
     batch_code: string
     transaction_date: timestamp
     shelf_name: string
