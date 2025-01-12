@@ -13,8 +13,8 @@
                   <img src="{{ asset('storage/assets/compiled/jpg/2.jpg') }}" alt="Avatar">
                 </div>
 
-                <h3 class="mt-3">User Production 01</h3>
-                <p class="text-small"><span class="badge bg-primary">Production</span></p>
+                <h3 class="mt-3">{{ $this->user->full_name }}</h3>
+                <p class="text-small"><span class="badge bg-primary">{{ $this->user->roles->first()->name }}</span></p>
               </div>
             </div>
           </div>
@@ -25,19 +25,19 @@
             <div class="card-body">
               <div class="form-group">
                 <label class="form-label">Full Name</label>
-                <input class="form-control" type="text" placeholder="Your Full Name" readonly>
+                <input class="form-control" type="text" value="{{ $this->user->full_name }}" placeholder="Your Full Name" readonly>
               </div>
               <div class="form-group">
                 <label class="form-label">Username</label>
-                <input class="form-control" type="text" placeholder="Your Username" readonly>
+                <input class="form-control" type="text" value="{{ $this->user->username }}" placeholder="Your Username" readonly>
               </div>
               <div class="form-group">
                 <label class="form-label" for="phone">Role</label>
-                <input class="form-control" type="text" placeholder="Your Role" readonly>
+                <input class="form-control" type="text" value="{{ $this->user->roles->first()->name }}" placeholder="Your Role" readonly>
               </div>
 
               <div class="form-group">
-                <a class="btn btn-primary" href="{{ route('manage-access.user.my-profile.update') }}">Change Your Profile</a>
+                <a class="btn btn-primary" href="{{ route('manage-access.user.my-profile.update', $this->user->id) }}">Change Your Profile</a>
               </div>
             </div>
           </div>

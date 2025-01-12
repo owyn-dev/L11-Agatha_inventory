@@ -18,32 +18,61 @@
 
       <div class="card">
         <div class="card-body">
-          <form action="#">
+          <form wire:submit="save" method="POST">
             <div class="form-group">
               <label class="form-label">Full Name</label>
-              <input class="form-control" type="text" placeholder="Your Full Name">
+              <input wire:model="form.full_name" class="form-control @error('form.full_name') is-invalid @enderror" type="text" placeholder="Your Full Name">
+              @error('form.full_name')
+                <div class="invalid-feedback">
+                  <i class="bx bx-radio-circle"></i>
+                  {{ $message }}
+                </div>
+              @enderror
             </div>
             <div class="form-group">
               <label class="form-label">Username</label>
-              <input class="form-control" type="text" placeholder="Your Username">
+              <input wire:model="form.username" class="form-control @error('form.username') is-invalid @enderror" type="text" placeholder="Your Username">
+              @error('form.username')
+                <div class="invalid-feedback">
+                  <i class="bx bx-radio-circle"></i>
+                  {{ $message }}
+                </div>
+              @enderror
             </div>
             <div class="form-group">
               <label class="form-label" for="phone">Role</label>
-              <select class="choices form-select">
-                <option value="" selected>Select Your Role</option>
-                <option value="administrator">Administrator</option>
-                <option value="sales">Sales</option>
-                <option value="production">Production</option>
-                <option value="inventory">Inventory</option>
+              <select wire:model="form.role" class="form-select @error('form.role') is-invalid @enderror">
+                <option value="" disabled selected>Select Your Role</option>
+                @foreach ($this->roles as $name)
+                  <option value="{{ $name }}">{{ $name }}</option>
+                @endforeach
               </select>
+              @error('form.role')
+                <div class="invalid-feedback">
+                  <i class="bx bx-radio-circle"></i>
+                  {{ $message }}
+                </div>
+              @enderror
             </div>
             <div class="form-group">
               <label class="form-label" for="password">Password</label>
-              <input class="form-control" type="password" placeholder="Enter Password">
+              <input wire:model="form.password" class="form-control @error('form.password') is-invalid @enderror" type="password" placeholder="Enter Password">
+              @error('form.password')
+                <div class="invalid-feedback">
+                  <i class="bx bx-radio-circle"></i>
+                  {{ $message }}
+                </div>
+              @enderror
             </div>
             <div class="form-group">
               <label class="form-label" for="confirm_password">Confirm Password</label>
-              <input class="form-control"type="password" placeholder="Enter Confirm Password">
+              <input wire:model="form.password_confirmation" class="form-control @error('form.password') is-invalid @enderror" type="password" placeholder="Enter Confirm Password">
+              @error('form.password_confirmation')
+                <div class="invalid-feedback">
+                  <i class="bx bx-radio-circle"></i>
+                  {{ $message }}
+                </div>
+              @enderror
             </div>
 
             <div class="form-group">
@@ -56,12 +85,3 @@
     </section>
   </div>
 </div>
-
-@push('styles-priority')
-  <link href="{{ asset('storage/assets/extensions/choices.js/public/assets/styles/choices.css') }}" rel="stylesheet">
-@endpush
-
-@push('scripts')
-  <script src="{{ asset('storage/assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/form-element-select.js') }}"></script>
-@endpush

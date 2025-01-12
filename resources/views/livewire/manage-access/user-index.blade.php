@@ -19,55 +19,21 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h4 class="col-auto">{{ $title }} Datatable</h4>
+            <h4 class="col-auto" id="title-datatable">{{ $title }} Datatable</h4>
           </div>
           <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-striped" id="table-user">
-                <thead>
-                  <tr>
-                    <th>Full Name</th>
-                    <th>Username</th>
-                    <th>Role</th>
-                    <th data-type="date">Updated At</th>
-                    <th data-sortable="false">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>User Production 01</td>
-                    <td>user_production_01</td>
-                    <td>production</td>
-                    <td>01-12-2024</td>
-                    <td>
-                      <a class="btn icon icon-left btn-sm btn-info" href="{{ route('manage-access.user.show') }}"><i class="bi bi-eye"></i></a>
-                      <a class="btn icon icon-left btn-sm btn-warning" href="{{ route('manage-access.user.update') }}"><i class="bi bi-pencil"></i></a>
-                      <a class="btn icon icon-left btn-sm btn-danger" href="#"><i class="bi bi-trash"></i></a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <livewire:datatable.users-table />
           </div>
         </div>
       </div>
+    </section>
   </div>
-  </section>
-</div>
 </div>
 
 @push('styles-priority')
-  <link href="{{ asset('storage/assets/extensions/simple-datatables/style.css') }}" rel="stylesheet">
-  <link href="{{ asset('storage/assets/compiled/css/table-datatable.css') }}" rel="stylesheet" crossorigin>
+  @rappasoftTableStyles
 @endpush
 
-@push('scripts')
-  <script src="{{ asset('storage/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/simple-datatables.js') }}"></script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      initDataTable("table-user");
-    });
-  </script>
+@push('scripts-priority')
+  @rappasoftTableScripts
 @endpush

@@ -5,50 +5,75 @@
     <section class="section">
       <div class="row">
 
-        <div class="col-12 col-lg-4">
+        <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <div class="d-flex justify-content-center align-items-center flex-column">
-                <div class="avatar avatar-2xl">
-                  <img src="{{ asset('storage/assets/compiled/jpg/2.jpg') }}" alt="Avatar">
-                </div>
-
-                <h3 class="mt-3">User Production 01</h3>
-                <p class="text-small"><span class="badge bg-primary">Production</span></p>
-              </div>
+              <a class="btn icon icon-left btn-lg btn-primary" href="http://127.0.0.1:8000/user/index">
+                <i class="bi bi-arrow-left"></i>
+                Back
+              </a>
             </div>
           </div>
         </div>
 
-        <div class="col-12 col-lg-8">
+        <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <form action="#">
+              <form wire:submit="edit" method="POST">
                 <div class="form-group">
                   <label class="form-label">Full Name</label>
-                  <input class="form-control" type="text" placeholder="Your Full Name">
+                  <input wire:model="form.full_name" class="form-control @error('form.full_name') is-invalid @enderror" type="text" placeholder="Your Full Name">
+                  @error('form.full_name')
+                    <div class="invalid-feedback">
+                      <i class="bx bx-radio-circle"></i>
+                      {{ $message }}
+                    </div>
+                  @enderror
                 </div>
                 <div class="form-group">
                   <label class="form-label">Username</label>
-                  <input class="form-control" type="text" placeholder="Your Username">
+                  <input wire:model="form.username" class="form-control @error('form.username') is-invalid @enderror" type="text" placeholder="Your Username">
+                  @error('form.username')
+                    <div class="invalid-feedback">
+                      <i class="bx bx-radio-circle"></i>
+                      {{ $message }}
+                    </div>
+                  @enderror
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="phone">Role</label>
-                  <select class="choices form-select">
-                    <option value="" selected>Select Your Role</option>
-                    <option value="administrator">Administrator</option>
-                    <option value="sales">Sales</option>
-                    <option value="production">Production</option>
-                    <option value="inventory">Inventory</option>
+                  <select wire:model="form.role" class="form-select @error('form.role') is-invalid @enderror">
+                    <option value="" disabled selected>Select Your Role</option>
+                    @foreach ($this->roles as $name)
+                      <option value="{{ $name }}">{{ $name }}</option>
+                    @endforeach
                   </select>
+                  @error('form.role')
+                    <div class="invalid-feedback">
+                      <i class="bx bx-radio-circle"></i>
+                      {{ $message }}
+                    </div>
+                  @enderror
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="password">New Password</label>
-                  <input class="form-control" type="password" placeholder="Enter New Password">
+                  <input wire:model="form.password" class="form-control @error('form.password') is-invalid @enderror" type="password" placeholder="Enter New Password">
+                  @error('form.password')
+                    <div class="invalid-feedback">
+                      <i class="bx bx-radio-circle"></i>
+                      {{ $message }}
+                    </div>
+                  @enderror
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="confirm_password">Confirm Password</label>
-                  <input class="form-control"type="password" placeholder="Enter Confirm Password">
+                  <input wire:model="form.password_confirmation" class="form-control @error('form.password') is-invalid @enderror" type="password" placeholder="Enter Confirm Password">
+                  @error('form.password_confirmation')
+                    <div class="invalid-feedback">
+                      <i class="bx bx-radio-circle"></i>
+                      {{ $message }}
+                    </div>
+                  @enderror
                 </div>
 
                 <div class="form-group">

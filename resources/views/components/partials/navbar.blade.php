@@ -50,14 +50,14 @@
         <a data-bs-toggle="dropdown" aria-expanded="false" href="#">
           <div class="user-menu d-flex">
             <div class="user-name text-end me-3">
-              <h6 class="mb-0 text-gray-600">John Ducky</h6>
-              <p class="mb-0 text-sm text-gray-600">Administrator</p>
+              <h6 class="mb-0 text-gray-600">{{ Auth::user()->full_name }}</h6>
+              <p class="mb-0 text-sm text-gray-600">{{ Auth::user()->roles->first()->name }}</p>
             </div>
           </div>
         </a>
         <ul aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-end" style="min-width: 11rem;">
-          <li><a class="dropdown-item" href="{{ route('manage-access.user.show') }}"><i class="icon-mid bi bi-person me-2"></i> My Profile</a></li>
-          <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
+          <li><a class="dropdown-item" href="{{ route('manage-access.user.my-profile.update', Auth::user()->id) }}"><i class="icon-mid bi bi-person me-2"></i> My Profile</a></li>
+          <li><a class="dropdown-item" href="{{ route('logout') }}"><i class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
         </ul>
       </div>
     </div>

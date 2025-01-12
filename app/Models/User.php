@@ -44,4 +44,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Production::class);
     }
+
+    public function modelHasRole()
+    {
+        return $this->morphOne('App\Models\ModelHasRole', 'model');
+    }
 }

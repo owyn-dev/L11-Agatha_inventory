@@ -15,6 +15,11 @@
     <link href="{{ asset('storage/assets/compiled/css/app-dark.css') }}" rel="stylesheet" crossorigin>
 
     @stack('styles')
+    <style>
+      [x-cloak] {
+        display: none !important;
+      }
+    </style>
   </head>
 
   <body>

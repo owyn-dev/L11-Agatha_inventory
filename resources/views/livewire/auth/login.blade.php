@@ -4,18 +4,30 @@
       <h1 class="auth-title">Log in.</h1>
       <p class="auth-subtitle mb-5">Log in with your data user.</p>
 
-      <form action="index.html">
+      <form wire:submit="login" method="POST">
         <div class="form-group position-relative has-icon-left mb-4">
-          <input class="form-control form-control-xl" type="text" placeholder="Username">
+          <input wire:model="username" class="form-control form-control-xl @error('username') is-invalid @enderror" type="text" placeholder="Username">
           <div class="form-control-icon">
             <i class="bi bi-person"></i>
           </div>
+          @error('username')
+            <div class="invalid-feedback">
+              <i class="bx bx-radio-circle"></i>
+              {{ $message }}
+            </div>
+          @enderror
         </div>
         <div class="form-group position-relative has-icon-left mb-4">
-          <input class="form-control form-control-xl" type="password" placeholder="Password">
+          <input wire:model="password" class="form-control form-control-xl @error('password') is-invalid @enderror" type="password" placeholder="Password">
           <div class="form-control-icon">
             <i class="bi bi-shield-lock"></i>
           </div>
+          @error('password')
+            <div class="invalid-feedback">
+              <i class="bx bx-radio-circle"></i>
+              {{ $message }}
+            </div>
+          @enderror
         </div>
         <div class="form-check form-check-lg d-flex align-items-end">
           <input class="form-check-input me-2" id="flexCheckDefault" type="checkbox" value="">
