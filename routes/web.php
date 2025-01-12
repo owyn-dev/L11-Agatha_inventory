@@ -16,7 +16,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/product/show', \App\Livewire\ManageProduct\ProductShow::class)->name('product.show');
     Route::get('/product/create', \App\Livewire\ManageProduct\ProductCreate::class)->name('product.create');
     Route::get('/product/update', \App\Livewire\ManageProduct\ProductUpdate::class)->name('product.update');
-    Route::delete('/product/destroy', \App\Livewire\ManageProduct\ProductDestroy::class)->name('product.destroy');
+    Route::delete('/product/destroy', \App\Livewire\ManageProduct\ProductDestroy::class)->name('product.destroy');  // Not Use
     Route::get('/product/barcode_scanner', \App\Livewire\ManageProduct\ProductBarcodeScanner::class)->name('product.barcode-scanner');
 
     Route::get('/production/index', \App\Livewire\ManageProduction\ProductionIndex::class)->name('production.index');
@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/create', \App\Livewire\ManageAccess\UserCreate::class)->name('manage-access.user.create');
     Route::get('/user/{user}/update', \App\Livewire\ManageAccess\UserUpdate::class)->name('manage-access.user.update');
     Route::get('/user/{user}/my_profile', \App\Livewire\ManageAccess\UserProfileUpdate::class)->name('manage-access.user.my-profile.update');
-    Route::delete('/user/{user}/destroy', \App\Livewire\ManageAccess\UserDestroy::class)->name('manage-access.user.destroy');
+    Route::delete('/user/{user}/destroy', \App\Livewire\ManageAccess\UserDestroy::class)->name('manage-access.user.destroy'); // Not Use
 
     Route::get('logout', function () {
         Auth::guard('web')->logout();
