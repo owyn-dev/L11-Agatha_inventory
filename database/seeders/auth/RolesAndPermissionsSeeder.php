@@ -3,15 +3,16 @@
 namespace Database\Seeders\auth;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Spatie\Permission\Models\Role;
 
-class RolesAndPermissionsSeeder extends Seeder {
+class RolesAndPermissionsSeeder extends Seeder
+{
     /**
      * Run the database seeds.
      */
-    public function run(): void {
+    public function run(): void
+    {
 
         // Setup Data Permissions
         $permissions = [

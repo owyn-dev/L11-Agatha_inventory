@@ -4,13 +4,14 @@ namespace Database\Seeders\auth;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class UsersRolesSeeder extends Seeder {
+class UsersRolesSeeder extends Seeder
+{
     /**
      * Run the database seeds.
      */
-    public function run(): void {
+    public function run(): void
+    {
 
         // Setup Data Users
         $users = [

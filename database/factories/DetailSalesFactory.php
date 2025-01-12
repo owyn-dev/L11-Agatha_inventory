@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\DetailSales;
 use App\Models\Product;
 use App\Models\Sale;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DetailSalesFactory extends Factory
 {

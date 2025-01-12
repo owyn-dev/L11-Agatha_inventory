@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Production;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductionFactory extends Factory
 {
@@ -26,7 +25,7 @@ class ProductionFactory extends Factory
             'production_request_date' => $this->faker->dateTime(),
             'production_user_id' => User::factory(),
             'production_date' => $this->faker->dateTime(),
-            'status' => $this->faker->randomElement(["waiting_for_response","in_progress","pending_approval","approval","rejected"]),
+            'status' => $this->faker->randomElement(['waiting_for_response', 'in_progress', 'pending_approval', 'approval', 'rejected']),
             'note' => $this->faker->word(),
         ];
     }

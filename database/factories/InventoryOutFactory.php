@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\InventoryIn;
 use App\Models\InventoryOut;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InventoryOutFactory extends Factory
 {

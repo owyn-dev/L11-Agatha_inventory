@@ -3,14 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable {
-    use HasFactory, Notifiable, HasRoles;
+class User extends Authenticatable
+{
+    use HasFactory, HasRoles, Notifiable;
 
     protected $fillable = [
         'full_name',
@@ -22,21 +23,25 @@ class User extends Authenticatable {
         'password',
     ];
 
-    protected function casts(): array {
+    protected function casts(): array
+    {
         return [
             'password' => 'hashed',
         ];
     }
 
-    public function salesUserAssign(): HasMany {
+    public function salesUserAssign(): HasMany
+    {
         return $this->hasMany(Sale::class);
     }
 
-    public function inventoryUserAssign(): HasMany {
+    public function inventoryUserAssign(): HasMany
+    {
         return $this->hasMany(Production::class);
     }
 
-    public function productionUserAssign(): HasMany {
+    public function productionUserAssign(): HasMany
+    {
         return $this->hasMany(Production::class);
     }
 }
