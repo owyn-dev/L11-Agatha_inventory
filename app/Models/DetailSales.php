@@ -38,7 +38,7 @@ class DetailSales extends Model
 
     public function sales(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Sales::class);
+        return $this->belongsTo(Sale::class);
     }
 
     public function product(): BelongsTo

@@ -2,15 +2,16 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
-class UserFactory extends Factory
-{
+class UserFactory extends Factory {
     /**
      * The current password being used by the factory.
      */
@@ -21,24 +22,24 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-    {
+    public function definition(): array {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'full_name' => $this->faker->firstName() . ' ' . $this->faker->lastName(),
+            'username' => $this->faker->unique()->userName(),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+    public function withRandomRole(array $availableRoles): Factory {
+        return $this->afterCreating(function (User $user) use ($availableRoles) {
+            // Pilih random role dari daftar
+            $randomRole = $this->faker->randomElement($availableRoles);
+
+            // Pastikan role ada di database
+            Role::firstOrCreate(['name' => $randomRole]);
+
+            // Berikan role ke user
+            $user->assignRole($randomRole);
+        });
     }
 }

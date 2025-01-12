@@ -2,21 +2,21 @@ created:
     - database/factories/ProductFactory.php
     - database/factories/ProductionFactory.php
     - database/factories/DetailProductionFactory.php
-    - database/factories/SalesFactory.php
+    - database/factories/SaleFactory.php
     - database/factories/DetailSalesFactory.php
     - database/factories/InventoryInFactory.php
     - database/factories/InventoryOutFactory.php
-    - database/migrations/2025_01_11_200524_create_products_table.php
-    - database/migrations/2025_01_11_200525_create_productions_table.php
-    - database/migrations/2025_01_11_200526_create_detail_productions_table.php
-    - database/migrations/2025_01_11_200527_create_sales_table.php
-    - database/migrations/2025_01_11_200528_create_detail_sales_table.php
-    - database/migrations/2025_01_11_200529_create_inventory_ins_table.php
-    - database/migrations/2025_01_11_200530_create_inventory_outs_table.php
+    - database/migrations/2025_01_12_083331_create_products_table.php
+    - database/migrations/2025_01_12_083332_create_productions_table.php
+    - database/migrations/2025_01_12_083333_create_detail_productions_table.php
+    - database/migrations/2025_01_12_083334_create_sales_table.php
+    - database/migrations/2025_01_12_083335_create_detail_sales_table.php
+    - database/migrations/2025_01_12_083336_create_inventory_ins_table.php
+    - database/migrations/2025_01_12_083337_create_inventory_outs_table.php
     - app/Models/Product.php
     - app/Models/Production.php
     - app/Models/DetailProduction.php
-    - app/Models/Sales.php
+    - app/Models/Sale.php
     - app/Models/DetailSales.php
     - app/Models/InventoryIn.php
     - app/Models/InventoryOut.php
@@ -25,7 +25,7 @@ models:
     Product: { code: string, name: string, image: string, variant: 'enum:tabung_s,tabung_m,kotak default:tabung_s', price: 'decimal:15,2', expired_day: 'integer default:30', stock: 'integer default:0', relationships: { hasMany: 'DetailProduction,DetailSales' } }
     Production: { inventory_user_id: 'id foreign:users.id', production_request_date: timestamp, production_user_id: 'id foreign:users.id nullable', production_date: 'timestamp nullable', status: 'enum:waiting_for_response,in_progress,pending_approval,approval,rejected default:waiting_for_response', note: string, relationships: { hasMany: DetailProduction } }
     DetailProduction: { production_id: 'id foreign:productions.id', product_id: 'id foreign:products.id', batch_code: 'string unique', expiration_date: timestamp, shelf_name: string, quantity: integer }
-    Sales: { sales_user_id: 'id foreign:users.id', transaction_date: timestamp, total_amount: 'decimal:15,2', relationships: { hasMany: DetailSales } }
+    Sale: { sales_user_id: 'id foreign:users.id', transaction_date: timestamp, total_amount: 'decimal:15,2', relationships: { hasMany: DetailSales } }
     DetailSales: { sales_id: 'id foreign:sales.id', product_id: 'id foreign:products.id', quantity: integer, price: 'decimal:15,2', sub_total: 'decimal:15,2' }
     InventoryIn: { product_id: 'id foreign:products.id', batch_code: 'string unique', transaction_date: timestamp, shelf_name: string, stock_start: integer, current_stock: integer, unit_price: 'decimal:15,2', expiration_date: timestamp, relationships: { hasMany: InventoryOut } }
     InventoryOut: { inventory_in_id: 'id foreign:inventory_ins.id', batch_code: string, transaction_date: timestamp, shelf_name: string, stock_out: integer }

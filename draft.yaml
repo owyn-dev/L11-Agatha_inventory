@@ -28,7 +28,7 @@ models:
     shelf_name: string
     quantity: integer
 
-  Sales:
+  Sale:
     sales_user_id: id foreign:users.id
     transaction_date: timestamp
     total_amount: decimal:15,2
