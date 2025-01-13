@@ -37,7 +37,7 @@
               </div>
 
               <div class="form-group">
-                <a class="btn btn-primary" href="{{ route('manage-access.user.my-profile.update', $this->user->id) }}">Change Your Profile</a>
+                <a wire:navigate class="btn btn-primary" href="{{ route('manage-access.user.my-profile.update', $this->user->id) }}">Change Your Profile</a>
               </div>
             </div>
           </div>

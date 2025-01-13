@@ -7,7 +7,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a class="btn icon icon-left btn-lg btn-primary" href="{{ route('manage-access.user.create') }}">
+              <a wire:navigate class="btn icon icon-left btn-lg btn-primary" href="{{ route('manage-access.user.create') }}">
                 <i class="bi bi-plus"></i>
                 Add Data User
               </a>

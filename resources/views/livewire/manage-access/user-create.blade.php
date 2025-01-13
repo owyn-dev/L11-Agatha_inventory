@@ -7,7 +7,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a class="btn icon icon-left btn-lg btn-primary" href="{{ route('manage-access.user.index') }}">
+              <a wire:navigate class="btn icon icon-left btn-lg btn-primary" href="{{ route('manage-access.user.index') }}">
                 <i class="bi bi-arrow-left"></i>
                 Back
               </a>
