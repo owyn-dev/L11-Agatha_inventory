@@ -22,7 +22,7 @@
             <h4 class="col-auto" id="title-datatable">{{ $title }} Datatable</h4>
           </div>
           <div class="card-body">
-            <livewire:datatable.users-table />
+            <livewire:datatable.users-table lazy />
           </div>
         </div>
       </div>
