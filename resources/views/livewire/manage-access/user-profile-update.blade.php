@@ -77,12 +77,3 @@
     </section>
   </div>
 </div>
-
-@push('styles-priority')
-  <link href="{{ asset('storage/assets/extensions/choices.js/public/assets/styles/choices.css') }}" rel="stylesheet">
-@endpush
-
-@push('scripts')
-  <script src="{{ asset('storage/assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/form-element-select.js') }}"></script>
-@endpush

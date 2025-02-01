@@ -15,7 +15,7 @@ return new class extends Migration
 
         Schema::create('inventory_outs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('inventory_in_id')->constrained();
+            $table->foreignId('inventory_in_id')->constrained()->onDelete('cascade');
             $table->string('batch_code');
             $table->timestamp('transaction_date');
             $table->string('shelf_name');

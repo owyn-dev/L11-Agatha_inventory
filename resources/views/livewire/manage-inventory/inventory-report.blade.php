@@ -7,15 +7,29 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <form action="#">
-                <div class="row g-3">
+              <form wire:submit.prevent="generateReport">
+                <div class="row g-3 align-items-start">
                   <div class="col-12 col-md-auto">
-                    <input class="form-control form-control-lg flatpickr" type="date" placeholder="Select Start Date">
+                    <input wire:model="startDate" class="form-control form-control-lg @error('startDate') is-invalid @enderror" type="date" placeholder="Select Start Date">
+                    @error('startDate')
+                      <div class="invalid-feedback">
+                        <i class="bx bx-radio-circle"></i>
+                        {{ $message }}
+                      </div>
+                    @enderror
                   </div>
                   <div class="col-12 col-md-auto">
-                    <input class="form-control form-control-lg flatpickr" type="date" placeholder="Select End date">
+                    <input wire:model="endDate" class="form-control form-control-lg @error('endDate') is-invalid @enderror" type="date" placeholder="Select End date">
+                    @error('endDate')
+                      <div class="invalid-feedback">
+                        <i class="bx bx-radio-circle"></i>
+                        {{ $message }}
+                      </div>
+                    @enderror
                   </div>
-                  <a class="col-12 col-md-auto btn icon icon-left btn-lg btn-primary" href="#"><i class="bi bi-journal-bookmark"></i> Generate Sales Report</a>
+                  <button class="col-12 col-md-auto btn icon icon-left btn-lg btn-primary" type="submit">
+                    <i class="bi bi-journal-bookmark"></i> Generate Inventory Report
+                  </button>
                 </div>
               </form>
             </div>
@@ -31,78 +45,99 @@
             <div class="card-body">
               <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <a data-bs-toggle="tab" class="nav-link active" href="#report-inventory-in" role="tab">Inventory [IN]</a>
+                  <a wire:click.prevent="setActiveTab('inventory_in')" class="nav-link {{ $activeTab === 'inventory_in' ? 'active' : '' }}" href="#">Inventory [IN]</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <a data-bs-toggle="tab" class="nav-link" href="#report-inventory-out" role="tab">Inventory [OUT]</a>
+                  <a wire:click.prevent="setActiveTab('inventory_out')" class="nav-link {{ $activeTab === 'inventory_out' ? 'active' : '' }}" href="#">Inventory [OUT]</a>
                 </li>
               </ul>
               <div class="tab-content">
-                <div class="tab-pane fade show active" id="report-inventory-in" role="tabpanel">
-                  <div class="table-responsive mt-4">
-                    <table class="table table-striped" id="table-inventory-in-report">
+                <div class="tab-pane fade {{ $activeTab === 'inventory_in' ? 'show active' : '' }}" id="report-inventory-in" role="tabpanel">
+                  @if ($inventoryIn)
+                    <div class="col-12 col-md-auto mt-4">
+                      <button wire:click.prevent="exportInventoryInPdf" class="col-12 col-md-auto btn icon icon-left btn-md btn-danger">
+                        <i class="bi bi-file-earmark-pdf"></i> Export PDF
+                      </button>
+                    </div>
+                  @endif
+                  <div class="table-responsive mt-2">
+                    <table class="table table-striped">
                       <thead>
                         <tr>
+                          <th>Transaction Date</th>
                           <th>Batch Code Production</th>
-                          <th data-type="date">Inventory Date</th>
                           <th>Product Name</th>
                           <th>Variant</th>
-                          <th>Unit Price</th>
                           <th>Shelf Name</th>
-                          <th>Initial Stock</th>
-                          <th>Final Stock</th>
+                          <th>Stock Start</th>
+                          <th>Current Stock</th>
                           <th>Expiration Date</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>NSR-S-001-BC001-01122024</td>
-                          <td>01-12-2024</td>
-                          <td>Nastar</td>
-                          <td>Tabung S</td>
-                          <td>Rp. 0</td>
-                          <td>RAK-GUDANG-A-001</td>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>01-12-2025</td>
-                        </tr>
+                        @forelse ($inventoryIn as $item)
+                          <tr>
+                            <td>{{ \Carbon\Carbon::parse($item->transaction_date)->format('Y-m-d') }}</td>
+                            <td>{{ $item->batch_code }}</td>
+                            <td>{{ $item->product->name }}</td>
+                            <td>{{ $item->product->variant->label() }}</td>
+                            <td>{{ $item->shelf_name }}</td>
+                            <td>{{ $item->stock_start }}</td>
+                            <td>{{ $item->current_stock }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->expiration_date)->format('Y-m-d') }}</td>
+                          </tr>
+                        @empty
+                          <tr>
+                            <td class="text-center text-muted" colspan="8">There is no Inventory [IN] data.</td>
+                          </tr>
+                        @endforelse
                       </tbody>
                     </table>
                   </div>
                 </div>
 
-                <div class="tab-pane fade" id="report-inventory-out" role="tabpanel">
-                  <div class="table-responsive mt-4">
-                    <table class="table table-striped" id="table-inventory-out-report">
+                <div class="tab-pane fade {{ $activeTab === 'inventory_out' ? 'show active' : '' }}" id="report-inventory-out" role="tabpanel">
+                  @if ($inventoryOut)
+                    <div class="col-12 col-md-auto mt-4">
+                      <button wire:click.prevent="exportInventoryOutPdf" class="col-12 col-md-auto btn icon icon-left btn-md btn-danger">
+                        <i class="bi bi-file-earmark-pdf"></i> Export PDF
+                      </button>
+                    </div>
+                  @endif
+                  <div class="table-responsive mt-2">
+                    <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Batch Code Production</th>
-                          <th data-type="date">Inventory Date</th>
+                          <th>Transaction Date</th>
+                          <th>Batch Code</th>
                           <th>Product Name</th>
                           <th>Variant</th>
                           <th>Unit Price</th>
                           <th>Shelf Name</th>
-                          <th>Initial Stock</th>
-                          <th>Stock Sold</th>
-                          <th>Expiration Date</th>
+                          <th>Stock Out</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>NSR-S-001-BC001-01122024</td>
-                          <td>01-12-2024</td>
-                          <td>Nastar</td>
-                          <td>Tabung S</td>
-                          <td>Rp. 0</td>
-                          <td>RAK-GUDANG-A-001</td>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>01-12-2025</td>
-                        </tr>
+                        @forelse ($inventoryOut as $item)
+                          <tr>
+                            <td>{{ \Carbon\Carbon::parse($item->transaction_date)->format('Y-m-d') }}</td>
+                            <td>{{ $item->batch_code }}</td>
+                            <td>{{ $item->inventoryIn->product->name }}</td>
+                            <td>{{ $item->inventoryIn->product->variant->label() }}</td>
+                            <td>Rp. {{ number_format($item->inventoryIn->unit_price, 0, ',', '.') }}</td>
+                            <td>{{ $item->shelf_name }}</td>
+                            <td>{{ $item->stock_out }}</td>
+                          </tr>
+                        @empty
+                          <tr>
+                            <td class="text-center text-muted" colspan="7">There is no Inventory [OUT] data.</td>
+                          </tr>
+                        @endforelse
                       </tbody>
                     </table>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -112,40 +147,3 @@
     </section>
   </div>
 </div>
-
-@push('styles-priority')
-  <link href="{{ asset('storage/assets/extensions/flatpickr/flatpickr.min.css') }}" rel="stylesheet">
-
-  <link href="{{ asset('storage/assets/extensions/simple-datatables/style.css') }}" rel="stylesheet">
-  <link href="{{ asset('storage/assets/compiled/css/table-datatable.css') }}" rel="stylesheet" crossorigin>
-@endpush
-
-@push('styles')
-  <style>
-    .dataTable-table {
-      min-width: 1500px !important;
-    }
-  </style>
-@endpush
-
-@push('scripts')
-  <script src="{{ asset('storage/assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
-
-  <script src="{{ asset('storage/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/simple-datatables.js') }}"></script>
-
-  <script>
-    flatpickr('.flatpickr', {
-      dateFormat: "d-m-Y",
-      minDate: "01.01.2017",
-      maxDate: "15.12.2018",
-    })
-  </script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      initDataTable("table-inventory-in-report");
-      initDataTable("table-inventory-out-report");
-    });
-  </script>
-@endpush

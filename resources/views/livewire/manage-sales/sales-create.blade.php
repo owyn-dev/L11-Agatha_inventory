@@ -7,7 +7,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a class="btn icon icon-left btn-lg btn-primary" href="{{ route('sales.index') }}">
+              <a wire:navigate.hover class="btn icon icon-left btn-lg btn-primary" href="{{ route('sales.index') }}">
                 <i class="bi bi-arrow-left"></i>
                 Back
               </a>
@@ -20,18 +20,24 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <form action="#">
+              <form wire:submit.prevent="save">
                 <div class="form-group">
                   <label class="form-label">Transaction Date</label>
-                  <input class="form-control form-control-lg flatpickr" type="date" placeholder="Select Transaction Date">
+                  <input wire:model="transaction_date" class="form-control form-control-lg @error('transaction_date') is-invalid @enderror" type="date" placeholder="Select Transaction Date">
+                  @error('transaction_date')
+                    <div class="invalid-feedback">
+                      <i class="bx bx-radio-circle"></i>
+                      {{ $message }}
+                    </div>
+                  @enderror
                 </div>
                 <div class="form-group">
                   <label class="form-label">Total Amount</label>
-                  <input class="form-control form-control-lg" type="text" placeholder="Total Amount" readonly>
+                  <input wire:model="total_amount" class="form-control form-control-lg @error('total_amount') is-invalid @enderror" type="text" placeholder="Total Amount" readonly>
                 </div>
 
                 <div class="form-group">
-                  <button class="btn btn-primary" type="submit">Save Sales</button>
+                  <button class="btn btn-primary" type="submit">Save</button>
                 </div>
               </form>
             </div>
@@ -42,48 +48,56 @@
           <div class="card">
             <div class="card-body">
               <div class="row">
-                <div class="col-12">
-                  <div class="row g-3">
-                    <div class="col-12 col-lg-3">
-                      <input class="form-control form-control-lg square" id="scan_barcode" type="text" placeholder="Input the Barcode or Scan the Barcode Code" autofocus>
-                    </div>
-                    <div class="col-12 col-md-2">
-                      <input class="form-control form-control-lg" type="number" placeholder="Your Product Quantity">
-                    </div>
-                    <div class="col-12 col-md-auto">
-                      <a class="btn btn-lg btn-primary" href="#">Add To List</a>
+                <form autocomplete="off">
+                  <div class="col-12">
+                    <div class="row g-3">
+                      <div class="col-12 col-lg-3">
+                        <input wire:model="batch_code" wire:keydown.enter="focusQuantity" class="form-control form-control-md @error('batch_code') is-invalid @enderror" id="scan_barcode" type="text" placeholder="Scan the Barcode Code" autofocus>
+                      </div>
+                      <div class="col-12 col-lg-2">
+                        <input wire:model="quantity" class="form-control form-control-md @error('quantity') is-invalid @enderror" id="quantity" type="number" placeholder="Your Product Quantity">
+                      </div>
+                      <div class="col-12 col-md-auto">
+                        <a wire:click="addProductList" class="btn btn-md btn-primary">Add To List</a>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </form>
 
                 <div class="col-12">
                   <div class="table-responsive">
-                    <table class="table table-striped" id="table-detail-production">
+                    <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Batch Code Production</th>
-                          <th>Code Product</th>
-                          <th>Name Product</th>
-                          <th>Variant Product</th>
-                          <th>Price Product</th>
-                          <th data-type="date">Expiration Date</th>
+                          <th>Code</th>
+                          <th>Batch Code</th>
+                          <th>Name</th>
+                          <th>Variant</th>
+                          <th>Price</th>
                           <th>Quantity</th>
-                          <th data-sortable="false">Action</th>
+                          <th>Shelf Name</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>NSR-S-001-BC001-01122024</td>
-                          <td>NSR-S-001</td>
-                          <td>Nastar</td>
-                          <td>Tabung S</td>
-                          <td>Rp. 0</td>
-                          <td>01-12-2024</td>
-                          <td>0</td>
-                          <td>
-                            <a class="btn icon icon-left btn-sm btn-danger" href="#"><i class="bi bi-trash"></i></a>
-                          </td>
-                        </tr>
+                        @forelse ($this->productList as $item)
+                          <tr>
+                            <td>{{ $item['code'] }}</td>
+                            <td>{{ $item['batch_code'] }}</td>
+                            <td>{{ $item['name'] }}</td>
+                            <td>{{ $item['variant'] }}</td>
+                            <td>Rp. {{ number_format($item['price'], 0, ',', '.') }}</td>
+                            <td>{{ $item['quantity'] }}</td>
+                            <td>{{ $item['shelf_name'] }}</td>
+                            <td>
+                              <a wire:click="removeProduct({{ $item['product_id'] }})" class="btn icon icon-left btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                            </td>
+                          </tr>
+                        @empty
+                          <tr>
+                            <td class="text-center" colspan="8">No items to display</td>
+                          </tr>
+                        @endforelse
                       </tbody>
                     </table>
                   </div>
@@ -98,43 +112,13 @@
     </section>
   </div>
 </div>
-
-@push('styles-priority')
-  <link href="{{ asset('storage/assets/extensions/flatpickr/flatpickr.min.css') }}" rel="stylesheet">
-
-  <link href="{{ asset('storage/assets/extensions/choices.js/public/assets/styles/choices.css') }}" rel="stylesheet">
-
-  <link href="{{ asset('storage/assets/extensions/simple-datatables/style.css') }}" rel="stylesheet">
-  <link href="{{ asset('storage/assets/compiled/css/table-datatable.css') }}" rel="stylesheet" crossorigin>
-@endpush
-
-@push('styles')
-  <style>
-    .dataTable-table {
-      min-width: 1400px !important;
-    }
-  </style>
-@endpush
-
-@push('scripts')
-  <script src="{{ asset('storage/assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
-
-  <script src="{{ asset('storage/assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/form-element-select.js') }}"></script>
-
-  <script src="{{ asset('storage/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/simple-datatables.js') }}"></script>
-
+@script
   <script>
-    flatpickr('.flatpickr', {
-      dateFormat: "d-m-Y",
-      defaultDate: new Date(),
-    })
-  </script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      initDataTable("table-detail-production");
+    Livewire.on('focus-quantity', function() {
+      const quantityInput = document.getElementById('quantity');
+      if (quantityInput) {
+        quantityInput.focus();
+      }
     });
   </script>
-@endpush
+@endscript

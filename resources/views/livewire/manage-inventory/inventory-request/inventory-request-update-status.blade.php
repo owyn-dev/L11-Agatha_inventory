@@ -7,7 +7,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a class="btn icon icon-left btn-lg btn-primary" href="{{ route('inventory.request.index') }}">
+              <a wire:navigate.hover class="btn icon icon-left btn-lg btn-primary" href="{{ route('inventory.request.index') }}">
                 <i class="bi bi-arrow-left"></i>
                 Back
               </a>
@@ -20,15 +20,21 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <form action="#">
+              <form wire:submit.prevent="edit">
                 <div class="form-group">
                   <label class="form-label">Production Request Date</label>
-                  <input class="form-control form-control-lg" type="text" value="01-12-2024" readonly>
+                  <input class="form-control form-control-lg" type="text" value="{{ \Carbon\Carbon::parse($this->production->production_request_date)->format('Y-m-d') }}" readonly>
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Note *</label>
-                  <input class="form-control form-control-lg" type="text" placeholder="Your Note">
-                  <small class="form-text text-muted" id="emailHelp">Provide a reason why the product was rejected</small>
+                  <label class="form-label">Note <span class="text-danger">*</span></label>
+                  <input wire:model="note" class="form-control form-control-lg @error('note') is-invalid @enderror" type="text" placeholder="Note">
+                  <small class="form-text text-primary">Provide a reason why the product was rejected</small>
+                  @error('note')
+                    <div class="invalid-feedback">
+                      <i class="bx bx-radio-circle"></i>
+                      {{ $message }}
+                    </div>
+                  @enderror
                 </div>
 
                 <div class="form-group">
@@ -45,28 +51,34 @@
               <div class="row">
                 <div class="col-12">
                   <div class="table-responsive">
-                    <table class="table table-striped" id="table-detail-production">
+                    <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Code Product</th>
-                          <th>Name Product</th>
-                          <th>Variant Product</th>
-                          <th>Price Product</th>
-                          <th data-type="date">Expiration Date</th>
+                          <th>Code</th>
+                          <th>Batch Code</th>
+                          <th>Name</th>
+                          <th>Variant</th>
+                          <th>Price</th>
                           <th>Stock Produced</th>
                           <th>Shelf Name</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>NSR-S-001</td>
-                          <td>Nastar</td>
-                          <td>Tabung S</td>
-                          <td>Rp. 0</td>
-                          <td>01-12-2024</td>
-                          <td>0</td>
-                          <td>RAKGUDANG-A001</td>
-                        </tr>
+                        @forelse ($this->productList as $item)
+                          <tr>
+                            <td>{{ $item['code'] }}</td>
+                            <td>{{ $item['batch_code'] }}</td>
+                            <td>{{ $item['name'] }}</td>
+                            <td>{{ $item['variant'] }}</td>
+                            <td>Rp. {{ number_format($item['price'], 0, ',', '.') }}</td>
+                            <td>{{ $item['quantity'] }}</td>
+                            <td>{{ $item['shelf_name'] }}</td>
+                          </tr>
+                        @empty
+                          <tr>
+                            <td class="text-center" colspan="7">No items to display</td>
+                          </tr>
+                        @endforelse
                       </tbody>
                     </table>
                   </div>
@@ -81,27 +93,3 @@
     </section>
   </div>
 </div>
-
-@push('styles-priority')
-  <link href="{{ asset('storage/assets/extensions/simple-datatables/style.css') }}" rel="stylesheet">
-  <link href="{{ asset('storage/assets/compiled/css/table-datatable.css') }}" rel="stylesheet" crossorigin>
-@endpush
-
-@push('styles')
-  <style>
-    .dataTable-table {
-      min-width: 1400px !important;
-    }
-  </style>
-@endpush
-
-@push('scripts')
-  <script src="{{ asset('storage/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/simple-datatables.js') }}"></script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      initDataTable("table-detail-production");
-    });
-  </script>
-@endpush

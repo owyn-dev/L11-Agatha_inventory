@@ -13,12 +13,12 @@ return [
     /**
      * Cache Rappasoft Frontend Assets
      */
-    'cache_assets' => false,
+    'cache_assets' => true,
 
     /**
      * Enable or Disable automatic injection of core assets
      */
-    'inject_core_assets_enabled' => false,
+    'inject_core_assets_enabled' => true,
 
     /**
      * Enable or Disable automatic injection of third-party assets

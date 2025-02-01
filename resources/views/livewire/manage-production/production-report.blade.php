@@ -7,15 +7,31 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <form action="#">
-                <div class="row g-3">
+              <form wire:submit.prevent="generateReport">
+                <div class="row g-3 align-items-start">
                   <div class="col-12 col-md-auto">
-                    <input class="form-control form-control-lg flatpickr" type="date" placeholder="Select Start Date">
+                    <input wire:model="startDate" class="form-control form-control-lg @error('startDate') is-invalid @enderror" type="date" placeholder="Select Start Date">
+                    @error('startDate')
+                      <div class="invalid-feedback">
+                        <i class="bx bx-radio-circle"></i>
+                        {{ $message }}
+                      </div>
+                    @enderror
                   </div>
                   <div class="col-12 col-md-auto">
-                    <input class="form-control form-control-lg flatpickr" type="date" placeholder="Select End date">
+                    <input wire:model="endDate" class="form-control form-control-lg @error('endDate') is-invalid @enderror" type="date" placeholder="Select End date">
+                    @error('endDate')
+                      <div class="invalid-feedback">
+                        <i class="bx bx-radio-circle"></i>
+                        {{ $message }}
+                      </div>
+                    @enderror
                   </div>
-                  <a class="col-12 col-md-auto btn icon icon-left btn-lg btn-primary" href="#"><i class="bi bi-journal-bookmark"></i> Generate Production Report</a>
+                  <div class="col-12 col-md-auto">
+                    <button class="col-12 col-md-auto btn icon icon-left btn-lg btn-primary" type="submit">
+                      <i class="bi bi-journal-bookmark"></i> Generate Production Report
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>
@@ -24,12 +40,19 @@
 
         <div class="col-12">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header pb-0">
               <h4 class="col-auto">{{ $title }} Datatable</h4>
             </div>
             <div class="card-body">
+              @if ($reports)
+                <div class="col-12 col-md-auto">
+                  <button wire:click.prevent="exportPDF" class="col-12 col-md-auto btn icon icon-left btn-md btn-danger">
+                    <i class="bi bi-file-earmark-pdf"></i> Export PDF
+                  </button>
+                </div>
+              @endif
               <div class="table-responsive">
-                <table class="table table-striped" id="table-production-report">
+                <table class="table table-striped">
                   <thead>
                     <tr>
                       <th>Batch Code Production</th>
@@ -42,15 +65,23 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>NSR-S-001-BC001-01122024</td>
-                      <td>NSR-S-001</td>
-                      <td>Nastar</td>
-                      <td>Tabung S</td>
-                      <td>01-12-2024</td>
-                      <td>01-12-2025</td>
-                      <td>50</td>
-                    </tr>
+                    @forelse($reports as $report)
+                      @foreach ($report->detailProductions as $detail)
+                        <tr>
+                          <td>{{ $detail->batch_code }}</td>
+                          <td>{{ $detail->product->code }}</td>
+                          <td>{{ $detail->product->name }}</td>
+                          <td>{{ $detail->product->variant->label() }}</td>
+                          <td>{{ \Carbon\Carbon::parse($report->production_date)->format('Y-m-d') }}</td>
+                          <td>{{ \Carbon\Carbon::parse($report->production_date)->addDays($detail->product->expired_day)->format('Y-m-d') }}</td>
+                          <td>{{ $detail->quantity }}</td>
+                        </tr>
+                      @endforeach
+                    @empty
+                      <tr>
+                        <td class="text-center" colspan="7">No Data Available</td>
+                      </tr>
+                    @endforelse
                   </tbody>
                 </table>
               </div>
@@ -62,38 +93,10 @@
   </div>
 </div>
 
-@push('styles-priority')
-  <link href="{{ asset('storage/assets/extensions/flatpickr/flatpickr.min.css') }}" rel="stylesheet">
-
-  <link href="{{ asset('storage/assets/extensions/simple-datatables/style.css') }}" rel="stylesheet">
-  <link href="{{ asset('storage/assets/compiled/css/table-datatable.css') }}" rel="stylesheet" crossorigin>
-@endpush
-
 @push('styles')
   <style>
-    .dataTable-table {
+    .table {
       min-width: 1000px !important;
     }
   </style>
-@endpush
-
-@push('scripts')
-  <script src="{{ asset('storage/assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
-
-  <script src="{{ asset('storage/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/simple-datatables.js') }}"></script>
-
-  <script>
-    flatpickr('.flatpickr', {
-      dateFormat: "d-m-Y",
-      minDate: "01.01.2017",
-      maxDate: "15.12.2018",
-    })
-  </script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      initDataTable("table-production-report");
-    });
-  </script>
 @endpush

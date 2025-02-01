@@ -24,7 +24,7 @@ class Login extends Component
 
             flash()->success('Welcome '.$this->username);
 
-            return $this->redirect(route('dashboard'), navigate: true);
+            return $this->redirect(route('dashboard'));
         } else {
             flash()->error('Login failed. Please check your credentials and try again.');
         }

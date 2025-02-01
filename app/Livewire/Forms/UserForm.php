@@ -46,7 +46,7 @@ class UserForm extends Form
             $user->assignRole($this->role);
         }
 
-        $this->resetForm();
+        $this->reset();
     }
 
     public function update()

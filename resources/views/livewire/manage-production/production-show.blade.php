@@ -7,7 +7,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a class="btn icon icon-left btn-lg btn-primary" href="{{ route('production.index') }}">
+              <a wire:navigate.hover class="btn icon icon-left btn-lg btn-primary" href="{{ route('production.index') }}">
                 <i class="bi bi-arrow-left"></i>
                 Back
               </a>
@@ -24,74 +24,81 @@
                 <div class="col-6">
                   <div class="form-group">
                     <label class="form-label">Production Request From</label>
-                    <input class="form-control form-control-lg" type="text" value="user_inventory_001" placeholder="Request Form" readonly>
+                    <input class="form-control form-control-lg" type="text" value="{{ $this->production->inventoryUser->full_name }}" placeholder="Request Form" readonly>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="form-group">
                     <label class="form-label">Production Request Date</label>
-                    <input class="form-control form-control-lg" type="text" value="01-12-2024" readonly>
+                    <input class="form-control form-control-lg" type="text" value="{{ \Carbon\Carbon::parse($this->production->production_request_date)->format('Y-m-d') }}" readonly>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-6">
                   <div class="form-group">
-                    <label class="form-label">Produced by</label>
-                    <input class="form-control form-control-lg" type="number" value="user_production_001" placeholder="Produced By" readonly>
+                    <label class="form-label">Production Handled By</label>
+                    <input class="form-control form-control-lg" type="text" value="{{ $this->production->productionUser->full_name }}" placeholder="Produced By" readonly>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="form-group">
                     <label class="form-label">Production Date</label>
-                    <input class="form-control form-control-lg" type="text" value="01-12-2024" readonly>
+                    <input class="form-control form-control-lg" type="text" value="{{ \Carbon\Carbon::parse($this->production->production_date)->format('Y-m-d') }}" readonly>
                   </div>
                 </div>
               </div>
               <div class="form-group">
                 <label class="form-label">Production Status</label>
-                <input class="form-control form-control-lg" type="text" value="Complete" readonly>
+                <input class="form-control form-control-lg" type="text" value="{{ $this->production->status->label() }}" readonly>
               </div>
               <div class="form-group">
                 <label class="form-label">Note</label>
-                <input class="form-control form-control-lg" type="text" value="-" readonly>
+                <input class="form-control form-control-lg" type="text" value="{{ $this->production->note }}" readonly>
               </div>
             </div>
           </div>
         </div>
-
         <div class="col-12">
           <div class="card">
             <div class="card-body">
               <div class="row">
                 <div class="col-12">
                   <div class="table-responsive">
-                    <table class="table table-striped" id="table-detail-production">
+                    <table class="table table-striped" id="datatable">
                       <thead>
                         <tr>
-                          <th>Code Product</th>
-                          <th>Batch Code Production</th>
-                          <th>Name Product</th>
-                          <th>Variant Product</th>
-                          <th>Price Product</th>
-                          <th data-type="date">Expiration Date</th>
+                          <th>Code</th>
+                          <th>Batch Code</th>
+                          <th>Name</th>
+                          <th>Variant</th>
+                          <th>Price</th>
+                          <th>Expiration Date</th>
                           <th>Stock Produced</th>
                           <th>Shelf Name</th>
-                          <th data-sortable="false">Action</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>NSR-S-001</td>
-                          <td>NSR-S-001-BC001-01122024</td>
-                          <td>Nastar</td>
-                          <td>Tabung S</td>
-                          <td>Rp. 0</td>
-                          <td>01-12-2024</td>
-                          <td>0</td>
-                          <td>RAKGUDANG-A001</td>
-                          <td><a class="btn btn-primary" href="#">Show Barcode</a></td>
-                        </tr>
+                        @foreach ($this->production->detailProductions as $item)
+                          <tr>
+                            <td>{{ $item->product->code }}</td>
+                            <td>{{ $item->batch_code }}</td>
+                            <td>{{ $item->product->name }}</td>
+                            <td>{{ $item->product->variant->label() }}</td>
+                            <td>Rp. {{ number_format($item->product->price, 0, ',', '.') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($this->production->production_date)->addDays($item->product->expired_day)->format('Y-m-d') }}</td>
+                            <td>{{ $item->quantity }}</td>
+                            <td>{{ $item->shelf_name }}</td>
+                            <td>
+                              <a wire:click="generateBarcodePdf({{ $item->id }})" wire:key="barcode-{{ $item->id }}" wire:loading.class=""disabled class="btn btn-sm btn-primary" href="#datatable">
+                                <span wire:loading.remove wire:target="generateBarcodePdf({{ $item->id }})">Show Barcode</span>
+                                <span aria-hidden="true" wire:loading wire:target="generateBarcodePdf({{ $item->id }})" class="spinner-border spinner-border-sm ms-2" role="status"></span>
+                                <span wire:loading wire:target="generateBarcodePdf({{ $item->id }})"> Loading...</span>
+                              </a>
+                            </td>
+                          </tr>
+                        @endforeach
                       </tbody>
                     </table>
                   </div>
@@ -106,19 +113,3 @@
     </section>
   </div>
 </div>
-
-@push('styles-priority')
-  <link href="{{ asset('storage/assets/extensions/simple-datatables/style.css') }}" rel="stylesheet">
-  <link href="{{ asset('storage/assets/compiled/css/table-datatable.css') }}" rel="stylesheet" crossorigin>
-@endpush
-
-@push('scripts')
-  <script src="{{ asset('storage/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/simple-datatables.js') }}"></script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      initDataTable("table-detail-production");
-    });
-  </script>
-@endpush

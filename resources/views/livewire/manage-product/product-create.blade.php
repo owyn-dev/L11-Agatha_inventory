@@ -7,7 +7,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a class="btn icon icon-left btn-lg btn-primary" href="{{ route('product.index') }}">
+              <a wire:navigate.hover class="btn icon icon-left btn-lg btn-primary" href="{{ route('product.index') }}">
                 <i class="bi bi-arrow-left"></i>
                 Back
               </a>
@@ -18,39 +18,77 @@
 
       <div class="card">
         <div class="card-body">
-          <form action="#">
+          <form wire:submit="save">
             <div class="form-group">
               <label class="form-label">Code Product</label>
-              <input class="form-control" type="text" placeholder="Your Code Product">
+              <input wire:model="form.code" class="form-control @error('form.code') is-invalid @enderror" type="text" autofocus>
+              @error('form.code')
+                <div class="invalid-feedback">
+                  <i class="bx bx-radio-circle"></i>
+                  {{ $message }}
+                </div>
+              @enderror
             </div>
             <div class="form-group">
               <label class="form-label">Name Product</label>
-              <input class="form-control" type="text" placeholder="Your Name Product">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Image Product</label>
-              <input class="form-control" type="file">
+              <input wire:model="form.name" class="form-control @error('form.name') is-invalid @enderror" type="text">
+              @error('form.name')
+                <div class="invalid-feedback">
+                  <i class="bx bx-radio-circle"></i>
+                  {{ $message }}
+                </div>
+              @enderror
             </div>
             <div class="form-group">
               <label class="form-label" for="phone">Variant</label>
-              <select class="choices form-select">
-                <option value="" selected>Select Your Variant</option>
-                <option value="Tabung S">Tabung S</option>
-                <option value="Tabung M">Tabung M</option>
-                <option value="Kotak">Kotak</option>
+              <select wire:model="form.variant" class="form-select @error('form.variant') is-invalid @enderror">
+                <option value="" selected>Select Variant</option>
+                @foreach ($this->variantProduct() as $variantOption)
+                  <option value="{{ $variantOption->value }}">
+                    {{ ucwords(str_replace('_', ' ', $variantOption->value)) }}
+                  </option>
+                @endforeach
               </select>
+              @error('form.variant')
+                <div class="invalid-feedback">
+                  <i class="bx bx-radio-circle"></i>
+                  {{ $message }}
+                </div>
+              @enderror
             </div>
             <div class="form-group">
               <label class="form-label">Price Product</label>
-              <input class="form-control" type="number" placeholder="Your Price Product">
+              <input wire:model="form.price" class="form-control @error('form.price') is-invalid @enderror" type="number">
+              @error('form.price')
+                <div class="invalid-feedback">
+                  <i class="bx bx-radio-circle"></i>
+                  {{ $message }}
+                </div>
+              @enderror
             </div>
             <div class="form-group">
               <label class="form-label">Expired Day</label>
-              <input class="form-control" type="number" placeholder="Expired Day">
+              <input wire:model="form.expired_day" class="form-control @error('form.expired_day') is-invalid @enderror" type="number">
+              @error('form.expired_day')
+                <div class="invalid-feedback">
+                  <i class="bx bx-radio-circle"></i>
+                  {{ $message }}
+                </div>
+              @enderror
+            </div>
+            <div class="form-group">
+              <label class="form-label">Image Product <div wire:loading wire:target="form.image" class="text-danger">Uploading...</div></label>
+              <input wire:model="form.image" class="form-control @error('form.image') is-invalid @enderror" type="file">
+              @error('form.image')
+                <div class="invalid-feedback">
+                  <i class="bx bx-radio-circle"></i>
+                  {{ $message }}
+                </div>
+              @enderror
             </div>
 
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">Save Product</button>
+              <button class="btn btn-primary" type="submit">Save</button>
             </div>
           </form>
         </div>
@@ -59,12 +97,3 @@
     </section>
   </div>
 </div>
-
-@push('styles-priority')
-  <link href="{{ asset('storage/assets/extensions/choices.js/public/assets/styles/choices.css') }}" rel="stylesheet">
-@endpush
-
-@push('scripts')
-  <script src="{{ asset('storage/assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/form-element-select.js') }}"></script>
-@endpush

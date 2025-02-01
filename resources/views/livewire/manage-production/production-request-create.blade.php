@@ -7,7 +7,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a class="btn icon icon-left btn-lg btn-primary" href="{{ route('production.request') }}">
+              <a wire:navigate.hover class="btn icon icon-left btn-lg btn-primary" href="{{ route('production.request') }}">
                 <i class="bi bi-arrow-left"></i>
                 Back
               </a>
@@ -20,41 +20,61 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <form action="#">
+              <form wire:submit.prevent="edit">
                 <div class="row">
                   <div class="col-6">
                     <div class="form-group">
                       <label class="form-label">Production Request From</label>
-                      <input class="form-control form-control-lg" type="text" value="user_inventory_001" readonly>
+                      <input class="form-control form-control-lg" type="text" value="{{ $this->production->inventoryUser->full_name }}" readonly>
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="form-group">
                       <label class="form-label">Production Request Date</label>
-                      <input class="form-control form-control-lg" type="text" value="01-12-2024" readonly>
+                      <input class="form-control form-control-lg" type="text" value="{{ \Carbon\Carbon::parse($this->production->production_request_date)->format('Y-m-d') }}" readonly>
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="form-label">Production Date</label>
-                  <input class="form-control form-control-lg flatpickr" type="date" placeholder="Select Production Date">
+                  <input wire:model="production_date" class="form-control form-control-lg @error('production_date') is-invalid @enderror" type="date" placeholder="Select Production Date">
+                  @error('production_date')
+                    <div class="invalid-feedback">
+                      <i class="bx bx-radio-circle"></i>
+                      {{ $message }}
+                    </div>
+                  @enderror
                 </div>
                 <div class="form-group">
                   <label class="form-label">Production Status</label>
-                  <select class="choices form-select">
-                    <option value="">Select Your Status</option>
-                    <option value="In Progress" selected>In Progress</option>
-                    <option value="Complete">Complete</option>
-                    <option value="Cancelled">Cancelled</option>
+                  <select wire:model="status" class="form-select @error('status') is-invalid @enderror">
+                    <option value="">Select Status</option>
+                    @foreach ($this->statusProduction() as $statusOption)
+                      <option value="{{ $statusOption->value }}">
+                        {{ ucwords(str_replace('_', ' ', $statusOption->value)) }}
+                      </option>
+                    @endforeach
                   </select>
+                  @error('status')
+                    <div class="invalid-feedback">
+                      <i class="bx bx-radio-circle"></i>
+                      {{ $message }}
+                    </div>
+                  @enderror
                 </div>
                 <div class="form-group">
                   <label class="form-label">Note</label>
-                  <input class="form-control form-control-lg" type="text" placeholder="Your Note">
+                  <input wire:model="note" class="form-control form-control-lg @error('note') is-invalid @enderror" type="text" placeholder="Note">
+                  @error('note')
+                    <div class="invalid-feedback">
+                      <i class="bx bx-radio-circle"></i>
+                      {{ $message }}
+                    </div>
+                  @enderror
                 </div>
 
                 <div class="form-group">
-                  <button class="btn btn-primary" type="submit">Save Production</button>
+                  <button class="btn btn-primary" type="submit">Make Production</button>
                 </div>
               </form>
             </div>
@@ -67,28 +87,34 @@
               <div class="row">
                 <div class="col-12">
                   <div class="table-responsive">
-                    <table class="table table-striped" id="table-detail-production">
+                    <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Code Product</th>
-                          <th>Name Product</th>
-                          <th>Variant Product</th>
-                          <th>Price Product</th>
-                          <th data-type="date">Expiration Date</th>
+                          <th>Code</th>
+                          <th>Batch Code</th>
+                          <th>Name</th>
+                          <th>Variant</th>
+                          <th>Price</th>
                           <th>Stock Produced</th>
                           <th>Shelf Name</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>NSR-S-001</td>
-                          <td>Nastar</td>
-                          <td>Tabung S</td>
-                          <td>Rp. 0</td>
-                          <td>01-12-2024</td>
-                          <td>0</td>
-                          <td>RAKGUDANG-A001</td>
-                        </tr>
+                        @forelse ($this->productList as $item)
+                          <tr>
+                            <td>{{ $item['code'] }}</td>
+                            <td>{{ $item['batch_code'] }}</td>
+                            <td>{{ $item['name'] }}</td>
+                            <td>{{ $item['variant'] }}</td>
+                            <td>Rp. {{ number_format($item['price'], 0, ',', '.') }}</td>
+                            <td>{{ $item['quantity'] }}</td>
+                            <td>{{ $item['shelf_name'] }}</td>
+                          </tr>
+                        @empty
+                          <tr>
+                            <td class="text-center" colspan="8">No items to display</td>
+                          </tr>
+                        @endforelse
                       </tbody>
                     </table>
                   </div>
@@ -103,43 +129,3 @@
     </section>
   </div>
 </div>
-
-@push('styles-priority')
-  <link href="{{ asset('storage/assets/extensions/flatpickr/flatpickr.min.css') }}" rel="stylesheet">
-
-  <link href="{{ asset('storage/assets/extensions/choices.js/public/assets/styles/choices.css') }}" rel="stylesheet">
-
-  <link href="{{ asset('storage/assets/extensions/simple-datatables/style.css') }}" rel="stylesheet">
-  <link href="{{ asset('storage/assets/compiled/css/table-datatable.css') }}" rel="stylesheet" crossorigin>
-@endpush
-
-@push('styles')
-  <style>
-    .dataTable-table {
-      min-width: 1400px !important;
-    }
-  </style>
-@endpush
-
-@push('scripts')
-  <script src="{{ asset('storage/assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
-
-  <script src="{{ asset('storage/assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/form-element-select.js') }}"></script>
-
-  <script src="{{ asset('storage/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/simple-datatables.js') }}"></script>
-
-  <script>
-    flatpickr('.flatpickr', {
-      dateFormat: "d-m-Y",
-      defaultDate: new Date(),
-    })
-  </script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      initDataTable("table-detail-production");
-    });
-  </script>
-@endpush

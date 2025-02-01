@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\VariantProduct;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -33,6 +34,7 @@ class Product extends Model
     protected $casts = [
         'id' => 'integer',
         'price' => 'decimal:2',
+        'variant' => VariantProduct::class,
     ];
 
     public function detailProductions(): HasMany

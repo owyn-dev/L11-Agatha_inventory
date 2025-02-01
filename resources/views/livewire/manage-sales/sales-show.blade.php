@@ -7,7 +7,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a class="btn icon icon-left btn-lg btn-primary" href="{{ route('sales.index') }}">
+              <a wire:navigate.hover class="btn icon icon-left btn-lg btn-primary" href="{{ route('sales.index') }}">
                 <i class="bi bi-arrow-left"></i>
                 Back
               </a>
@@ -22,11 +22,11 @@
             <div class="card-body">
               <div class="form-group">
                 <label class="form-label">Transaction Date</label>
-                <input class="form-control form-control-lg" type="text" value="01-12-2024" readonly>
+                <input class="form-control form-control-lg" type="text" value="{{ \Carbon\Carbon::parse($this->sales->transaction_date)->format('Y-m-d') }}" readonly>
               </div>
               <div class="form-group">
                 <label class="form-label">Total Amount</label>
-                <input class="form-control form-control-lg" type="text" placeholder="Total Amount" readonly>
+                <input class="form-control form-control-lg" type="text" value="{{ 'Rp ' . number_format($this->sales->total_amount, 0, ',', '.') }}" placeholder="Total Amount" readonly>
               </div>
             </div>
           </div>
@@ -41,25 +41,25 @@
                     <table class="table table-striped" id="table-detail-sales">
                       <thead>
                         <tr>
-                          <th>Batch Code Production</th>
                           <th>Code Product</th>
                           <th>Name Product</th>
                           <th>Variant Product</th>
                           <th>Price Product</th>
-                          <th data-type="date">Expiration Date</th>
                           <th>Quantity</th>
+                          <th>Sub Total</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>NSR-S-001-BC001-01122024</td>
-                          <td>NSR-S-001</td>
-                          <td>Nastar</td>
-                          <td>Tabung S</td>
-                          <td>Rp. 0</td>
-                          <td>01-12-2024</td>
-                          <td>0</td>
-                        </tr>
+                        @foreach ($this->sales->detailSales as $item)
+                          <tr>
+                            <td>{{ $item->product->code }}</td>
+                            <td>{{ $item->product->name }}</td>
+                            <td>{{ $item->product->variant->label() }}</td>
+                            <td>Rp. {{ number_format($item->price, 0, ',', '.') }}</td>
+                            <td>{{ $item->quantity }}</td>
+                            <td>Rp. {{ number_format($item->sub_total, 0, ',', '.') }}</td>
+                          </tr>
+                        @endforeach
                       </tbody>
                     </table>
                   </div>
@@ -74,27 +74,3 @@
     </section>
   </div>
 </div>
-
-@push('styles-priority')
-  <link href="{{ asset('storage/assets/extensions/simple-datatables/style.css') }}" rel="stylesheet">
-  <link href="{{ asset('storage/assets/compiled/css/table-datatable.css') }}" rel="stylesheet" crossorigin>
-@endpush
-
-@push('styles')
-  <style>
-    .dataTable-table {
-      min-width: 1400px !important;
-    }
-  </style>
-@endpush
-
-@push('scripts')
-  <script src="{{ asset('storage/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/simple-datatables.js') }}"></script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      initDataTable("table-detail-sales");
-    });
-  </script>
-@endpush

@@ -36,7 +36,7 @@ class Sale extends Model
 
     public function detailSales(): HasMany
     {
-        return $this->hasMany(DetailSales::class);
+        return $this->hasMany(DetailSales::class, 'sales_id');
     }
 
     public function salesUser(): BelongsTo

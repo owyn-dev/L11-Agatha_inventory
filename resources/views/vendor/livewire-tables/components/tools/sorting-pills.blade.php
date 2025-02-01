@@ -84,7 +84,7 @@
 @elseif ($this->isBootstrap5)
     <div class="my-0">
         @if ($this->sortingPillsAreEnabled() && $this->hasSorts())
-            <div class="m-0" x-cloak x-show="!currentlyReorderingStatus">
+            <div class="mb-0 d-md-flex align-items-center flex-nowrap" x-cloak x-show="!currentlyReorderingStatus">
                 <small>{{ __($this->getLocalisationPath.'Applied Sorting') }}:</small>
 
                 @foreach($this->getSorts() as $columnSelectName => $direction)

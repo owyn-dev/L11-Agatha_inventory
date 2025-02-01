@@ -21,7 +21,7 @@
              </li>
 
              <li class="submenu-item">
-               <a wire:navigate class="submenu-link" href="{{ route('logout') }}">Logout</a></a>
+               <a class="submenu-link" href="{{ route('logout') }}">Logout</a></a>
              </li>
            </ul>
          </li>
@@ -47,7 +47,7 @@
            </a>
 
            <ul class="submenu">
-             <li class="submenu-item {{ request()->routeIs('product.*') ? 'active' : '' }}">
+             <li class="submenu-item {{ request()->routeIs('product.index', 'product.create', 'product.show', 'product.update') ? 'active' : '' }}">
                <a wire:navigate class="submenu-link" href="{{ route('product.index') }}">Product List</a>
              </li>
              <li class="submenu-item {{ request()->routeIs('product.barcode-scanner') ? 'active' : '' }}">

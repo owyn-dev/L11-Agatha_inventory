@@ -29,11 +29,3 @@
     </section>
   </div>
 </div>
-
-@push('styles-priority')
-  @rappasoftTableStyles
-@endpush
-
-@push('scripts-priority')
-  @rappasoftTableScripts
-@endpush

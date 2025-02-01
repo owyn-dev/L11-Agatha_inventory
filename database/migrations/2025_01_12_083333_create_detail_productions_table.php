@@ -15,10 +15,9 @@ return new class extends Migration
 
         Schema::create('detail_productions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('production_id')->constrained();
-            $table->foreignId('product_id')->constrained();
+            $table->foreignId('production_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->string('batch_code')->unique();
-            $table->timestamp('expiration_date');
             $table->string('shelf_name');
             $table->integer('quantity');
             $table->timestamps();

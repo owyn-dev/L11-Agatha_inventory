@@ -37,6 +37,8 @@ class UsersTable extends DataTableComponent
             return ['default' => true];
         });
 
+        $this->setColumnSelectDisabled();
+
         $this->storeFiltersInSessionDisabled();
         $this->setToolBarAttributes(['class' => ' mt-1', 'default-colors' => true, 'default-styling' => true]);
 
@@ -47,7 +49,7 @@ class UsersTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make('Id', 'id')
+            Column::make('#', 'id')
                 ->sortable(),
             Column::make('Full name', 'full_name')
                 ->sortable(),
@@ -63,13 +65,13 @@ class UsersTable extends DataTableComponent
                     return ['default' => true];
                 })
                 ->buttons([
-                    LinkColumn::make('View') // make() has no effect in this case but needs to be set anyway
+                    LinkColumn::make('View')
                         ->title(fn () => '<i class="bi bi-eye"></i>')
                         ->location(fn ($row) => route('manage-access.user.show', $row))
                         ->attributes(function () {
                             return [
                                 'class' => 'btn icon icon-left btn-sm btn-info',
-                                'wire:navigate' => '',
+                                'wire:navigate.hover' => '',
                             ];
                         })->html(),
                     LinkColumn::make('Update')
@@ -78,10 +80,9 @@ class UsersTable extends DataTableComponent
                         ->attributes(function ($row) {
                             return [
                                 'class' => 'btn icon icon-left btn-sm btn-warning',
-                                'wire:navigate' => '',
+                                'wire:navigate.hover' => '',
                             ];
                         })->html(),
-
                     LinkColumn::make('Delete')
                         ->title(fn () => '<i class="bi bi-trash"></i>')
                         ->location(fn ($row) => '#title-datatable')

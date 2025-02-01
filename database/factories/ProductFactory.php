@@ -22,11 +22,11 @@ class ProductFactory extends Factory
         return [
             'code' => $this->faker->word(),
             'name' => $this->faker->name(),
-            'image' => $this->faker->word(),
+            'image' => 'cheese_sagoo.jpg',
             'variant' => $this->faker->randomElement(['tabung_s', 'tabung_m', 'kotak']),
-            'price' => $this->faker->randomFloat(2, 0, 9999999999999.99),
-            'expired_day' => $this->faker->numberBetween(-10000, 10000),
-            'stock' => $this->faker->numberBetween(-10000, 10000),
+            'price' => $this->faker->randomFloat(2, 50000, 150000),
+            'expired_day' => $this->faker->numberBetween(1, 30),
+            'stock' => 0,
         ];
     }
 }

@@ -7,7 +7,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a class="btn icon icon-left btn-lg btn-primary" href="{{ route('product.index') }}">
+              <a wire:navigate.hover class="btn icon icon-left btn-lg btn-primary" href="{{ route('product.index') }}">
                 <i class="bi bi-arrow-left"></i>
                 Back
               </a>
@@ -18,39 +18,39 @@
 
       <div class="card mb-3">
         <div class="row g-0">
-          <div class="col-12 col-md-3">
-            <img class="rounded img-fluid" src="https://asset.kompas.com/crops/VnqoA6qVt8W13t9l8ffMTPchAmY=/10x7:1000x667/1200x800/data/photo/2020/10/12/5f840dcab3c2b.jpg" alt="Card image cap" style="height: 22rem; object-fit: cover;">
+          <div class="col-12 col-md-2">
+            <img class="rounded img-fluid" src="{{ asset('storage/images/' . $this->product->image) }}" alt="Card image cap" style="height: 22rem; object-fit: cover;">
           </div>
           <div class="col-12 col-md-9">
             <table class="table mb-0">
               <tbody>
                 <tr>
                   <td class="col-4 col-md-4 col-lg-4 col-xl-4 col-xxl-2">Code Product</td>
-                  <td>NSR-S-001</td>
+                  <td>{{ $this->product->code }}</td>
                 </tr>
                 <tr>
                   <td>Name Product</td>
-                  <td>Nastar</td>
+                  <td>{{ $this->product->name }}</td>
                 </tr>
                 <tr>
                   <td>Variant Product</td>
-                  <td>Tabung S</td>
+                  <td>{{ $this->product->variant->label() }}</td>
                 </tr>
                 <tr>
                   <td>Price Product</td>
-                  <td>Rp. 0</td>
+                  <td>Rp. {{ number_format($this->product->price, 0, ',', '.') }}</td>
                 </tr>
                 <tr>
                   <td>Expired Day Product</td>
-                  <td>30 Day</td>
+                  <td>{{ $this->product->expired_day }} Day</td>
                 </tr>
                 <tr>
                   <td>Stock Product</td>
-                  <td>0</td>
+                  <td>{{ $this->product->stock }}</td>
                 </tr>
                 <tr>
                   <td>Updated At</td>
-                  <td>01-12-2024</td>
+                  <td>{{ $this->product->updated_at }}</td>
                 </tr>
               </tbody>
             </table>

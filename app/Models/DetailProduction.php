@@ -19,7 +19,6 @@ class DetailProduction extends Model
         'production_id',
         'product_id',
         'batch_code',
-        'expiration_date',
         'shelf_name',
         'quantity',
     ];
@@ -33,7 +32,6 @@ class DetailProduction extends Model
         'id' => 'integer',
         'production_id' => 'integer',
         'product_id' => 'integer',
-        'expiration_date' => 'timestamp',
     ];
 
     public function production(): BelongsTo

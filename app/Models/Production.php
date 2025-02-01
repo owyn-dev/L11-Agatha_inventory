@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\StatusProduction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,6 +37,7 @@ class Production extends Model
         'production_request_date' => 'timestamp',
         'production_user_id' => 'integer',
         'production_date' => 'timestamp',
+        'status' => StatusProduction::class,
     ];
 
     public function detailProductions(): HasMany
@@ -45,11 +47,11 @@ class Production extends Model
 
     public function inventoryUser(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'inventory_user_id');
     }
 
     public function productionUser(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'production_user_id');
     }
 }

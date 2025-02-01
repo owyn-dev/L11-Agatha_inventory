@@ -7,15 +7,17 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <form action="#">
+              <form wire:submit.prevent="loadResults">
                 <div class="row g-3">
                   <div class="col-12 col-md-auto">
-                    <input class="form-control form-control-lg flatpickr" type="date" placeholder="Select Start Date">
+                    <input wire:model="date_start" class="form-control form-control-lg @error('date_start') is-invalid @enderror" type="date" placeholder="Select Start Date">
                   </div>
                   <div class="col-12 col-md-auto">
-                    <input class="form-control form-control-lg flatpickr" type="date" placeholder="Select End date">
+                    <input wire:model="date_end" class="form-control form-control-lg @error('date_end') is-invalid @enderror" type="date" placeholder="Select End Date">
                   </div>
-                  <a class="col-12 col-md-auto btn icon icon-left btn-lg btn-primary" href="#"><i class="bi bi-calculator"></i> Product Priority Analysis</a>
+                  <button class="col-12 col-md-auto btn icon icon-left btn-lg btn-primary" type="submit">
+                    <i class="bi bi-calculator"></i> Product Priority Analysis
+                  </button>
                 </div>
               </form>
             </div>
@@ -24,47 +26,85 @@
 
         <div class="col-12">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header pb-0">
               <h4 class="col-auto">{{ $title }} Datatable</h4>
             </div>
             <div class="card-body">
+              @if ($results)
+                <div class="col-12 my-2">
+                  <button wire:click.prevent="exportPdf" class="col-12 col-md-auto btn icon icon-left btn-md btn-danger">
+                    <i class="bi bi-file-earmark-pdf"></i> Export PDF
+                  </button>
+                </div>
+              @endif
+
+              <input wire:model.live.debounce.500ms="search" class="form-control" type="text" placeholder="Search">
               <div class="table-responsive">
-                <table class="table table-striped" id="table-priority-analysis">
+                <table class="table table-striped">
                   <thead>
                     <tr>
-                      <th>Product Name</th>
-                      <th>Variant</th>
-                      <th>percentage of amount</th>
-                      <th>percentage of sales</th>
-                      <th>Total percentage</th>
-                      <th>Priority Group</th>
+                      <th wire:click="sortBy('code')" style="cursor: pointer;">
+                        Code Product
+                        @if ($sortField === 'code')
+                          <i class="bi bi-chevron-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                        @endif
+                      </th>
+                      <th wire:click="sortBy('product')" style="cursor: pointer;">
+                        Name
+                        @if ($sortField === 'product')
+                          <i class="bi bi-chevron-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                        @endif
+                      </th>
+                      <th wire:click="sortBy('variant')" style="cursor: pointer;">
+                        Variant
+                        @if ($sortField === 'variant')
+                          <i class="bi bi-chevron-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                        @endif
+                      </th>
+                      <th wire:click="sortBy('percentage_quantity')" style="cursor: pointer;">
+                        Percentage of Amount
+                        @if ($sortField === 'percentage_quantity')
+                          <i class="bi bi-chevron-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                        @endif
+                      </th>
+                      <th wire:click="sortBy('percentage_sales')" style="cursor: pointer;">
+                        Percentage of Sales
+                        @if ($sortField === 'percentage_sales')
+                          <i class="bi bi-chevron-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                        @endif
+                      </th>
+                      <th wire:click="sortBy('total_percentage')" style="cursor: pointer;">
+                        Total Percentage
+                        @if ($sortField === 'total_percentage')
+                          <i class="bi bi-chevron-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                        @endif
+                      </th>
+                      <th wire:click="sortBy('classification')" style="cursor: pointer;">
+                        Priority Group
+                        @if ($sortField === 'classification')
+                          <i class="bi bi-chevron-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                        @endif
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Product 01</td>
-                      <td>Tube-S</td>
-                      <td>0,00%</td>
-                      <td>0,00%</td>
-                      <td>0,00%</td>
-                      <td><span class="badge bg-success">A</span></td>
-                    </tr>
-                    <tr>
-                      <td>Product 01</td>
-                      <td>Tube-M</td>
-                      <td>0,00%</td>
-                      <td>0,00%</td>
-                      <td>0,00%</td>
-                      <td><span class="badge bg-warning">B</span></td>
-                    </tr>
-                    <tr>
-                      <td>Product 01</td>
-                      <td>Box</td>
-                      <td>0,00%</td>
-                      <td>0,00%</td>
-                      <td>0,00%</td>
-                      <td><span class="badge bg-danger">C</span></td>
-                    </tr>
+                    @forelse ($results as $result)
+                      <tr>
+                        <td>{{ $result['code'] }}</td>
+                        <td>{{ $result['product'] }}</td>
+                        <td>{{ $result['variant'] }}</td>
+                        <td>{{ $result['percentage_quantity'] }}%</td>
+                        <td>{{ $result['percentage_sales'] }}%</td>
+                        <td>{{ $result['total_percentage'] }}%</td>
+                        <td>
+                          <span class="{{ $result['badge_class'] }}">{{ $result['classification'] }}</span>
+                        </td>
+                      </tr>
+                    @empty
+                      <tr>
+                        <td class="text-center" colspan="7">No data available</td>
+                      </tr>
+                    @endforelse
                   </tbody>
                 </table>
               </div>
@@ -76,38 +116,10 @@
   </div>
 </div>
 
-@push('styles-priority')
-  <link href="{{ asset('storage/assets/extensions/flatpickr/flatpickr.min.css') }}" rel="stylesheet">
-
-  <link href="{{ asset('storage/assets/extensions/simple-datatables/style.css') }}" rel="stylesheet">
-  <link href="{{ asset('storage/assets/compiled/css/table-datatable.css') }}" rel="stylesheet" crossorigin>
-@endpush
-
 @push('styles')
   <style>
-    .dataTable-table {
+    .table {
       min-width: 1000px !important;
     }
   </style>
-@endpush
-
-@push('scripts')
-  <script src="{{ asset('storage/assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
-
-  <script src="{{ asset('storage/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/simple-datatables.js') }}"></script>
-
-  <script>
-    flatpickr('.flatpickr', {
-      dateFormat: "d-m-Y",
-      minDate: "01.01.2017",
-      maxDate: "15.12.2018",
-    })
-  </script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      initDataTable("table-priority-analysis");
-    });
-  </script>
 @endpush

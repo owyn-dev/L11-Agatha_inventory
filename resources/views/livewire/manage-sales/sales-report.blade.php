@@ -7,53 +7,85 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-
-              <div class="row g-3">
-                <div class="col-12 col-md-auto">
-                  <input class="form-control form-control-lg flatpickr" type="date" placeholder="Select Start Date">
+              <form wire:submit.prevent="generateReport">
+                <div class="row g-3 align-items-start">
+                  <div class="col-12 col-md-auto">
+                    <input wire:model="startDate" class="form-control form-control-lg @error('startDate') is-invalid @enderror" type="date" placeholder="Select Start Date">
+                    @error('startDate')
+                      <div class="invalid-feedback">
+                        <i class="bx bx-radio-circle"></i>
+                        {{ $message }}
+                      </div>
+                    @enderror
+                  </div>
+                  <div class="col-12 col-md-auto">
+                    <input wire:model="endDate" class="form-control form-control-lg @error('endDate') is-invalid @enderror" type="date" placeholder="Select End date">
+                    @error('endDate')
+                      <div class="invalid-feedback">
+                        <i class="bx bx-radio-circle"></i>
+                        {{ $message }}
+                      </div>
+                    @enderror
+                  </div>
+                  <button class="col-12 col-md-auto btn icon icon-left btn-lg btn-primary" type="submit">
+                    <i class="bi bi-journal-bookmark"></i> Generate Sales Report
+                  </button>
                 </div>
-
-                <div class="col-12 col-md-auto">
-                  <input class="form-control form-control-lg flatpickr" type="date" placeholder="Select End date">
-                </div>
-
-                <a class="col-12 col-md-auto btn icon icon-left btn-lg btn-primary" href="#"><i class="bi bi-journal-bookmark"></i> Generate Sales Report</a>
-
-              </div>
-
+              </form>
             </div>
           </div>
         </div>
 
         <div class="col-12">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header pb-0">
               <h4 class="col-auto">{{ $title }} Datatable</h4>
             </div>
             <div class="card-body">
+              @if ($reports)
+                <div class="col-12 col-md-auto">
+                  <button wire:click.prevent="exportPDF" class="col-12 col-md-auto btn icon icon-left btn-md btn-danger">
+                    <i class="bi bi-file-earmark-pdf"></i> Export PDF
+                  </button>
+                </div>
+              @endif
               <div class="table-responsive">
-                <table class="table table-striped" id="table-priority-analysis">
+                <table class="table table-striped">
                   <thead>
                     <tr>
+                      <th>Transaction Date</th>
                       <th>Product Code</th>
                       <th>Product Name</th>
                       <th>Variant</th>
-                      <th>Transaction Date</th>
                       <th>Price Product</th>
                       <th>Quantity</th>
                       <th>Total Price</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>NSR-S-001</td>
-                      <td>Nastar</td>
-                      <td>Tabung S</td>
-                      <td>01-12-2024</td>
-                      <td>Rp. 0</td>
-                      <td>50</td>
-                      <td>Rp. 0</td>
-                    </tr>
+                    @forelse($reports as $report)
+                      @foreach ($report->detailSales as $detail)
+                        <tr>
+                          <td>{{ \Carbon\Carbon::parse($report->transaction_date)->format('Y-m-d') }}</td>
+                          <td>{{ $detail->product->code }}</td>
+                          <td class="text-start">{{ $detail->product->name }}</td>
+                          <td>{{ $detail->product->variant->label() }}</td>
+                          <td>{{ number_format($detail->price, 0, ',', '.') }}</td>
+                          <td>{{ $detail->quantity }}</td>
+                          <td>{{ number_format($detail->sub_total, 0, ',', '.') }}</td>
+                        </tr>
+                      @endforeach
+                    @empty
+                      <tr>
+                        <td colspan="7">No Data Available</td>
+                      </tr>
+                    @endforelse
+                    @if ($reports)
+                      <tr>
+                        <td style="text-align: right; font-weight: bold;" colspan="6"></td>
+                        <td style="font-weight: bold;">{{ number_format($totalAmount, 0, ',', '.') }}</td>
+                      </tr>
+                    @endif
                   </tbody>
                 </table>
               </div>
@@ -64,39 +96,3 @@
     </section>
   </div>
 </div>
-
-@push('styles-priority')
-  <link href="{{ asset('storage/assets/extensions/flatpickr/flatpickr.min.css') }}" rel="stylesheet">
-
-  <link href="{{ asset('storage/assets/extensions/simple-datatables/style.css') }}" rel="stylesheet">
-  <link href="{{ asset('storage/assets/compiled/css/table-datatable.css') }}" rel="stylesheet" crossorigin>
-@endpush
-
-@push('styles')
-  <style>
-    .dataTable-table {
-      min-width: 1000px !important;
-    }
-  </style>
-@endpush
-
-@push('scripts')
-  <script src="{{ asset('storage/assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
-
-  <script src="{{ asset('storage/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
-  <script src="{{ asset('storage/assets/static/js/pages/simple-datatables.js') }}"></script>
-
-  <script>
-    flatpickr('.flatpickr', {
-      dateFormat: "d-m-Y",
-      minDate: "01.01.2017",
-      maxDate: "15.12.2018",
-    })
-  </script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      initDataTable("table-priority-analysis");
-    });
-  </script>
-@endpush
